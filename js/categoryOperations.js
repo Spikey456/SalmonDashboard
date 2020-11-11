@@ -33,31 +33,99 @@ const tableRow = ` <tr>
 `
 
 $(document).ready(function() {
-
+    let selectedID = null;
+    let catRef;
+    let table = $('#datatableid').DataTable();
     refresh();
     function refresh() {
+        catRef = null;
+        selectedID = null
+        $("#update_id").val("")  
+        $('#categoryNameUpdate').val("")
         let count = 0;
+        
+        table.clear().draw();
         categoryRefs.on("child_added", snap => {
+            
             count++;
             let field = snap.val();
             console.log(field, " "+ snap)
             let id = snap.key
-            $("#tableBody").append('<tr id=row'+id+'>'+
+            let nameLabel = '<td><p id="labelName'+id+'">'+field.name+'</p></td>'
+            let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
+            let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">DELETE</button>`;
+        
+            table.row.add([count, nameLabel, editBtn, delBtn]).draw();
+            /*$("#tableBody").append('<tr id=row'+id+'>'+
             '<td>'+count+'</td>' +
             '<td>'+field.name+'</td>' +
             '<td> <button type="button" class="btn btn-success edit">EDIT</button> </td>' +
             '<td> <button type="button" class="btn btn-danger delete">DELETE</button> </td>' +
-            '</tr>')
+            '</tr>')*/
+            $(`#update${id}`).bind("click", function(event) {
+                event.preventDefault()
+                updateEntry(id)
+            });
+            $(`#del${id}`).bind("click", function(event) {
+                event.preventDefault()
+                selectedID = id
+                $("#deletemodal").modal('show')
+            });
         })
     }
+
+    function updateEntry(id){
+        catRef = firebase.database().ref('category/'+id)
+        selectedID = id;
+        let name = $(`#labelName${id}`).html();
+        console.log($(`#labelName${id}`).html())
+        $("#update_id").val(id)  
+        $('#categoryNameUpdate').val(name)
+        $("#editmodal").modal("show");
+        
+    }
+
+    $('#updatedata').on('click', function(){
+        let newName = $('#categoryNameUpdate').val()
+        catRef.update({
+            name: newName
+        }).then(function(){
+            $("#editmodal").modal("hide");
+            alert("updated");
+            refresh();
+        }).catch(function(error) {
+            alert(error)
+        })
+    })
+
+    $("#deleteCategory").on("click", function(){
+        console.log("Deleting " + selectedID);
+        catRef = firebase.database().ref('category/'+selectedID)
+        catRef.remove().then(function (){
+            $("#deletemodal").modal('hide')
+            refresh()
+               
+            alert("Deleted");
+        }).catch(function(error){
+            alert(error)
+        });
+    })
+
+
 
     $("#saveCategory").click(function() {
         console.log("Inserting!");
         let newCategory = {};
         newCategory.name = $("#categoryName").val();
         categoryRefs.push(newCategory, function() {
-            alert("Category has been inserted successfully!");
+            table.clear().draw();
+            refresh();
+        
+            
+            
+            $("#categoryName").val('');
             $("#categoryAddModal").modal('hide');
+
         })
     })
 

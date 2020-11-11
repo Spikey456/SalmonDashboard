@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="./css/design.css?version=51">
+	<link rel="stylesheet" type="text/css" href="./css/design.css?v=1">
 	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
@@ -17,7 +17,7 @@
     <script type="text/javascript" src="./js/categoryOperations.js"> </script>
 </head>
 <body>
-<header>
+
 
 	<!--DDDDDDAAAAAASSSSSHHHHHBBBBBBOOOOAAAARRRRDDDD-->
   <?php
@@ -71,29 +71,20 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-            <form action="update.php" method="POST">
+            
 
       <div class="modal-body">
  				<input type="hidden" name="update_id" id="update_id">
-       	 <div class="form-group">
-    <label>Product Code</label>
-    <input type="number" class="form-control" id="ProdCode" name="ProdCode" placeholder="Enter Product Code">
-  </div>
-  <div class="form-group">
-    <label>Product Name</label>
-    <input type="text" class="form-control" id="ProdName" name="ProdName" placeholder="Enter Product Name">
-  </div>
-  <div class="form-group">
-    <label>Product Price</label>
-    <input type="number" class="form-control" id="ProdPrice" name="ProdPrice" placeholder="Enter Product Price">
-  </div>
-
+        <div class="form-group">
+          <label>Category Name</label>
+          <input type="text" class="form-control" id="categoryNameUpdate" >
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="updatedata" class="btn btn-primary">Update Data</button>
+        <button type="button" id="updatedata" class="btn btn-primary">Update Data</button>
       </div>
-      </form>
+      
 
     </div>
   </div>
@@ -112,16 +103,16 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-            <form action="delete.php" method="POST">
+    
 
-            	<input type="hidden" name="delete_id" id="delete_id">
+          
             	<h4>Do you want to delete this category?</h4>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
-        <button type="submit" name="deletedata" class="btn btn-primary">YES!! Delete it</button>
+        <button type="button" id="deleteCategory" class="btn btn-primary">YES</button>
       </div>
-      </form>
+      
 
     </div>
   </div>
@@ -154,7 +145,7 @@
     </div>
     <div class="card">
 			<div class="card-body">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productaddmodal">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryAddModal">
 						  Add Data
 						</button>
 				
@@ -174,19 +165,7 @@
 
 <script>
 	$(document).ready(function() {
-    $('#datatableid').DataTable({
-    		"pagingType": "full_numbers",
-    		"leghtMenu": [
-    				[10, 25, 50, -1],
-    				[10, 25, 50, "All"]
-    		],
-    		responsive: true,
-    		language: {
-    			search: "_INPUT_",
-    			searchPlaceholder: "Search Records",
-    		}
-
-    });
+    $('#datatableid').DataTable();
 
 });
 </script>
