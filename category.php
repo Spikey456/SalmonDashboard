@@ -4,15 +4,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
+    <meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="./css/design.css?version=51">
 	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
-  <script type="text/javascript" src="js/jquery-3.5.1.min.js" ></script> 
-  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js" ></script> 
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+    <script type="text/javascript" src="./js/categoryOperations.js"> </script>
+</head>
 <body>
 <header>
 
@@ -24,36 +27,30 @@
 
 
 <!-- ADD DATA -->
-<div class="modal fade" id="productaddmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="categoryAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Product Data</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-            <form action="insert.php" method="POST">
+            <form>
 
       <div class="modal-body">
  
-       	 <div class="form-group">
-    <label>Product Code</label>
-    <input type="number" class="form-control" name="ProdCode" placeholder="Enter Product Code">
-  </div>
-  <div class="form-group">
-    <label>Product Name</label>
-    <input type="text" class="form-control" name="ProdName" placeholder="Enter Product Name">
-  </div>
-  <div class="form-group">
-    <label>Product Price</label>
-    <input type="number" class="form-control" name="ProdPrice" placeholder="Enter Product Price">
-  </div>
+       	 
+        <div class="form-group">
+            <label>Category Name</label>
+            <input type="text" class="form-control" id="categoryName" placeholder="Enter Category Name" required>
+        </div>
+
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="savedata" class="btn btn-primary">Save Data</button>
+        <button type="button" id="saveCategory" class="btn btn-primary">Save Data</button>
       </div>
       </form>
 
@@ -110,7 +107,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete Product Data</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Delete Category</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -118,7 +115,7 @@
             <form action="delete.php" method="POST">
 
             	<input type="hidden" name="delete_id" id="delete_id">
-            	<h4>Do you want to delete this data?</h4>
+            	<h4>Do you want to delete this category?</h4>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
@@ -138,55 +135,19 @@
 
 		<div class="card" >
 			<div class="card-body">
-<?php
-		$connection = mysqli_connect("localhost","root","");
-		$db = mysqli_select_db ($connection, 'salmon');
-
-		$query = "SELECT * FROM productdata";
-		$query_run = mysqli_query($connection, $query);
-?>
 
 <table id="datatableid" class="table table-bordered table-dark">
   <thead>
     <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Product Code</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Product Price</th>
+      <th scope="col">No.</th>
+      <th scope="col">Category Name</th>
       <th scope="col">EDIT</th>
        <th scope="col">DELETE</th>
-
     </tr>
   </thead>
-  <?php
-		if($query_run)
-		{
-			foreach($query_run as $row)
-			{
-	?>
-  <tbody>
-    <tr>
-      <td><?php echo $row['id']; ?></td>
-      <td><?php echo $row['ProdCode']; ?></td>
-      <td><?php echo $row['ProdName']; ?></td>
-      <td><?php echo $row['ProdPrice']; ?></td>
-      <td>
-      	<button type="button" class="btn btn-success edit">EDIT</button>
-      </td>
-       <td>
-      	<button type="button" class="btn btn-danger delete">DELETE</button>
-      </td>
-    </tr>
+  <tbody id="tableBody">
+   
   </tbody>
-  <?php
-			}
-		}
-		else
-		{
-			echo "No record Found";
-		}
-
-?>
 </table>
 				
 			</div>
