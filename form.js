@@ -37,3 +37,16 @@ function signOut(){
   auth.signOut();
   alert("Signed out");
 }
+
+auth.onAuthStateChanged(function(user){
+ 
+  if(user){
+      var email = user.email;
+      alert("Active User: "+email)
+      console.log("USER ID: "+user.uid)
+      userID = user.uid
+      window.location.pathname = "/SalmonDashboard/home.php"
+  }else{
+      alert("No Active User")
+  }
+})

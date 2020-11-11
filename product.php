@@ -18,16 +18,8 @@
 				<li><a href="#"><i class="fa fa-folder"></i>Inventory</a></li>
 				<li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
 			</ul>
-				<div class="social_media">
-					<a href="#"><i class="fab fa-facebook-f"></i></a>
-					<a href="#"><i class="fab fa-twitter"></i></a>
-					<a href="#"><i class="fab fa-instagram"></i></a>
-				</div>
+		</div>
 
-		</div>
-		<div class="main_content">
-			
-		</div>
 	</div>
 <!--DDDDDDAAAAAASSSSSHHHHHBBBBBBOOOOAAAARRRRDDDD-->
 
@@ -140,31 +132,13 @@
 </div>
 <!--------------------------------------------------------------------------------------------------------------------------->
 
-<div class="container">
+<div class="container" style="padding-top:50px;">
 	<div class="jumnbotron">
-		<div class="card">
-			<h2></h2>
-		</div>
-		<div class="card">
-			<div class="card-body">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productaddmodal">
-						  Add Data
-						</button>
-				
-			</div>
-		</div>
-
-		<div class="card">
-			<div class="card-body">
-
-
 	
-				
-				
-				
-				
-	
+		
 
+		<div class="card" >
+			<div class="card-body">
 <?php
 		$connection = mysqli_connect("localhost","root","");
 		$db = mysqli_select_db ($connection, 'salmon');
@@ -215,6 +189,14 @@
 
 ?>
 </table>
+				
+			</div>
+    </div>
+    <div class="card">
+			<div class="card-body">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productaddmodal">
+						  Add Data
+						</button>
 				
 			</div>
 		</div>

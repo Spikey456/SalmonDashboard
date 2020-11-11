@@ -26,11 +26,6 @@ if(!isset($_SESSION['username'])){
 				<li><a href="#"><i class="fas fa-folder"></i>Inventory</a></li>
 				<li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
 			</ul>
-				<div class="social_media">
-					<a href="#"><i class="fab fa-facebook-f"></i></a>
-					<a href="#"><i class="fab fa-twitter"></i></a>
-					<a href="#"><i class="fab fa-instagram"></i></a>
-				</div>
 
 		</div>
 		<div class="main_content">
