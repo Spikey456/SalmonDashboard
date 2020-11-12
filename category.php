@@ -164,10 +164,7 @@
 <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
-	$(document).ready(function() {
-    $('#datatableid').DataTable();
 
-});
 </script>
 
 <!--For Delete-->

@@ -2,7 +2,7 @@
   include("sidebar.php")
 ?>
 <!DOCTYPE html>
-<html>
+<html >
 <head>
 <meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="./css/design.css?version=51">
@@ -13,8 +13,10 @@
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
-<body>
-<header>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-storage.js"></script>
+  <script type="text/javascript" src='js/productOperations.js'></script>
+<body style="background-color: darkgrey;">
+
 
 	<!--DDDDDDAAAAAASSSSSHHHHHBBBBBBOOOOAAAARRRRDDDD-->
   <?php
@@ -33,29 +35,35 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-            <form action="insert.php" method="POST">
+            
 
       <div class="modal-body">
- 
        	 <div class="form-group">
-    <label>Product Code</label>
-    <input type="number" class="form-control" name="ProdCode" placeholder="Enter Product Code">
-  </div>
-  <div class="form-group">
-    <label>Product Name</label>
-    <input type="text" class="form-control" name="ProdName" placeholder="Enter Product Name">
-  </div>
-  <div class="form-group">
-    <label>Product Price</label>
-    <input type="number" class="form-control" name="ProdPrice" placeholder="Enter Product Price">
-  </div>
+          <label>Name</label>
+          <input type="text" required class="form-control" id="prodName" placeholder="Enter Product Name">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select class="custom-select" id="prodCat" required>
+            <option selected value="">Select Category...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Product Price per Kilo</label>
+          <input type="number" class="form-control" id="prodPrice" placeholder="Enter Product Price">
+        </div>
+        <div class="form-group">
+          <label>Product Available Stocks</label>
+          <input type="number" class="form-control" id="prodStocks" placeholder="Enter Product Stocks">
+        </div>
+
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="savedata" class="btn btn-primary">Save Data</button>
+        <button type="button" id="saveProduct" class="btn btn-primary">Save Data</button>
       </div>
-      </form>
+     
 
     </div>
   </div>
@@ -74,29 +82,38 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-            <form action="update.php" method="POST">
+          
 
       <div class="modal-body">
- 				<input type="hidden" name="update_id" id="update_id">
-       	 <div class="form-group">
-    <label>Product Code</label>
-    <input type="number" class="form-control" id="ProdCode" name="ProdCode" placeholder="Enter Product Code">
-  </div>
-  <div class="form-group">
-    <label>Product Name</label>
-    <input type="text" class="form-control" id="ProdName" name="ProdName" placeholder="Enter Product Name">
-  </div>
-  <div class="form-group">
-    <label>Product Price</label>
-    <input type="number" class="form-control" id="ProdPrice" name="ProdPrice" placeholder="Enter Product Price">
-  </div>
+        <div class="form-group">
+          <input id="prodImg" type="image" src="http://upload.wikimedia.org/wikipedia/commons/c/ca/Button-Lightblue.svg" width="30px"/>
+          <input type="file" id="uploadImage" style="display: none;" />
+        </div>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" required class="form-control" id="prodNameEdit" placeholder="Enter Product Name">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select class="custom-select" id="prodCatEdit" required>
+            <option selected value="">Select Category...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Product Price per Kilo</label>
+          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Enter Product Price">
+        </div>
+        <div class="form-group">
+          <label>Product Available Stocks</label>
+          <input type="number" class="form-control" id="prodStocksEdit" placeholder="Enter Product Stocks">
+        </div>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" name="updatedata" class="btn btn-primary">Update Data</button>
+        <button type="submit" id="updatedata" class="btn btn-primary">Update Data</button>
       </div>
-      </form>
+    
 
     </div>
   </div>
@@ -115,16 +132,16 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-            <form action="delete.php" method="POST">
-
-            	<input type="hidden" name="delete_id" id="delete_id">
-            	<h4>Do you want to delete this data?</h4>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
-        <button type="submit" name="deletedata" class="btn btn-primary">YES!! Delete it</button>
+       
+      <div class="modal-body">
+        <input type="hidden" name="delete_id" id="delete_id">
+        <h5>Do you want to delete this data?</h5>
       </div>
-      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" id="deleteProduct" class="btn btn-primary">Yes</button>
+      </div>
+   
 
     </div>
   </div>
@@ -138,55 +155,28 @@
 
 		<div class="card" >
 			<div class="card-body">
-<?php
-		$connection = mysqli_connect("localhost","root","");
-		$db = mysqli_select_db ($connection, 'salmon');
 
-		$query = "SELECT * FROM productdata";
-		$query_run = mysqli_query($connection, $query);
-?>
 
 <table id="datatableid" class="table table-bordered table-dark">
   <thead>
     <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Product Code</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Product Price</th>
+      <th scope="col">No.</th>
+      <th scope="col">Image</th>
+      <th scope="col">Name</th>
+      <th scope="col">Category</th>
+      <th scope="col">Price(per kg)</th>
+      <th scope="col">Stocks</th>
       <th scope="col">EDIT</th>
        <th scope="col">DELETE</th>
 
     </tr>
   </thead>
-  <?php
-		if($query_run)
-		{
-			foreach($query_run as $row)
-			{
-	?>
-  <tbody>
-    <tr>
-      <td><?php echo $row['id']; ?></td>
-      <td><?php echo $row['ProdCode']; ?></td>
-      <td><?php echo $row['ProdName']; ?></td>
-      <td><?php echo $row['ProdPrice']; ?></td>
-      <td>
-      	<button type="button" class="btn btn-success edit">EDIT</button>
-      </td>
-       <td>
-      	<button type="button" class="btn btn-danger delete">DELETE</button>
-      </td>
-    </tr>
-  </tbody>
-  <?php
-			}
-		}
-		else
-		{
-			echo "No record Found";
-		}
 
-?>
+
+  <tbody>
+
+  </tbody>
+
 </table>
 				
 			</div>
@@ -211,24 +201,7 @@
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 
-<script>
-	$(document).ready(function() {
-    $('#datatableid').DataTable({
-    		"pagingType": "full_numbers",
-    		"leghtMenu": [
-    				[10, 25, 50, -1],
-    				[10, 25, 50, "All"]
-    		],
-    		responsive: true,
-    		language: {
-    			search: "_INPUT_",
-    			searchPlaceholder: "Search Records",
-    		}
 
-    });
-
-});
-</script>
 
 <!--For Delete-->
 <script>

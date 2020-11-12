@@ -18,24 +18,16 @@ productSchema = {
 const dbRef = firebase.database().ref();
 const categoryRefs = dbRef.child('category');
 
-const tableRow = ` <tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>
-    <button type="button" class="btn btn-success edit">EDIT</button>
-</td>
- <td>
-    <button type="button" class="btn btn-danger delete">DELETE</button>
-</td>
-</tr>
-`
 
 $(document).ready(function() {
     let selectedID = null;
     let catRef;
-    let table = $('#datatableid').DataTable();
+    let table = $('#datatableid').DataTable({
+        "language": {
+            "emptyTable": 'WALANG DATA',
+            "zeroRecords": "No records to display"
+        }
+    });
     refresh();
     function refresh() {
         catRef = null;
@@ -43,7 +35,6 @@ $(document).ready(function() {
         $("#update_id").val("")  
         $('#categoryNameUpdate').val("")
         let count = 0;
-        
         table.clear().draw();
         categoryRefs.on("child_added", snap => {
             
@@ -92,7 +83,7 @@ $(document).ready(function() {
         }).then(function(){
             $("#editmodal").modal("hide");
             alert("updated");
-            refresh();
+            //refresh();
         }).catch(function(error) {
             alert(error)
         })
@@ -118,7 +109,7 @@ $(document).ready(function() {
         let newCategory = {};
         newCategory.name = $("#categoryName").val();
         categoryRefs.push(newCategory, function() {
-            table.clear().draw();
+            document.getElementById("tableBody").innerHTML = "";
             refresh();
         
             
