@@ -14,8 +14,10 @@
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
   <script type="text/javascript" src='js/moment.min.js'></script>
-  <script type="text/javascript" src='js/productOperations.js'></script>
+  <script type="text/javascript" src='js/roleOperations.js'></script>
+  <script type="text/javascript" src='js/authOperations.js'></script>
 <body>
 
 <div class="wrapper">
@@ -27,11 +29,11 @@
 
 
 <!-- ADD DATA -->
-<div class="modal fade" id="productaddmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="roleaddmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Product Data</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add Role Data</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -41,28 +43,12 @@
       <div class="modal-body">
        	 <div class="form-group">
           <label>Name</label>
-          <input type="text" required class="form-control" id="prodName" placeholder="Enter Product Name">
+          <input type="text" required class="form-control" id="roleName" placeholder="Enter Role Name">
         </div>
-        <div class="form-group">
-          <label>Category</label>
-          <select class="custom-select" id="prodCat" required>
-            <option selected value="">Select Category...</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Product Price per Kilo</label>
-          <input type="number" class="form-control" id="prodPrice" placeholder="Enter Product Price">
-        </div>
-        <div class="form-group">
-          <label>Product Available Stocks</label>
-          <input type="number" class="form-control" id="prodStocks" placeholder="Enter Product Stocks">
-        </div>
-
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" id="saveProduct" class="btn btn-primary">Save Data</button>
+        <button type="button" id="saveRole" class="btn btn-primary">Save Data</button>
       </div>
      
 
@@ -78,7 +64,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Product Data</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Role Data</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -86,28 +72,12 @@
           
 
       <div class="modal-body">
-        <div class="form-group">
-          <input id="prodImg" type="image" src="http://upload.wikimedia.org/wikipedia/commons/c/ca/Button-Lightblue.svg" width="30px"/>
-          <input type="file" id="uploadImage" style="display: none;" />
-        </div>
+        
         <div class="form-group">
           <label>Name</label>
-          <input type="text" required class="form-control" id="prodNameEdit" placeholder="Enter Product Name">
+          <input type="text" required class="form-control" id="roleNameUpdate" placeholder="Enter Role Name">
         </div>
-        <div class="form-group">
-          <label>Category</label>
-          <select class="custom-select" id="prodCatEdit" required>
-            <option selected value="">Select Category...</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Product Price per Kilo</label>
-          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Enter Product Price">
-        </div>
-        <div class="form-group">
-          <label>Product Available Stocks</label>
-          <input type="number" class="form-control" id="prodStocksEdit" placeholder="Enter Product Stocks">
-        </div>
+        
 
       </div>
       <div class="modal-footer">
@@ -128,7 +98,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete Product Data</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Delete Role Data</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -140,7 +110,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        <button type="button" id="deleteProduct" class="btn btn-primary">Yes</button>
+        <button type="button" id="deleteRole" class="btn btn-primary">Yes</button>
       </div>
    
 
@@ -155,18 +125,14 @@
 		
 
 		<div class="card" >
-			<div class="card-body" >
+			<div class="card-body" style="width: 842px;">
 
 
 <table id="datatableid" class="table table-bordered table-dark">
   <thead>
     <tr>
       <th scope="col">No.</th>
-      <th scope="col">Image</th>
       <th scope="col">Name</th>
-      <th scope="col">Category</th>
-      <th scope="col">Price(per kg)</th>
-      <th scope="col">Stocks</th>
       <th scope="col">EDIT</th>
        <th scope="col">DELETE</th>
 
@@ -184,8 +150,8 @@
     </div>
     <div class="card">
 			<div class="card-body">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productaddmodal">
-						  Add Data
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roleaddmodal">
+						  Add Role
 						</button>
 				
 			</div>

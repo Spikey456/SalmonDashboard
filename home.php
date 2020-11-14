@@ -1,9 +1,11 @@
 <?
 
 session_start();
+
 if(!isset($_SESSION['username'])){
 	header('location:login.php');
 }
+echo $_SESSION['__session']
 
 ?>
 
@@ -21,16 +23,11 @@ if(!isset($_SESSION['username'])){
 </head>
 <body>
 	<div class="wrapper">
-		<div class="sidebar">
-			<h2>Pink Salmon</h2>
-			<ul>
-				<li><a href="home.php"><i class="fas fa-home"></i>Home</a></li>
-				<li><a href="product.php"><i class="fas fa-shopping-cart"></i>Product</a></li>
-				<li><a href="#"><i class="fas fa-folder"></i>Inventory</a></li>
-				<li><a href="#"><i class="fas fa-users"></i>Users</a></li>
-				<li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
-			</ul>
-		</div>
+		
+		<?php
+		include("sidebar.php"); 
+		echo $sideBar;
+		?>
 		<div class="main_content">
 			
 		</div>

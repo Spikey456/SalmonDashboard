@@ -52,36 +52,56 @@ $(document).ready(function() {
  
 
     function refresh(){
-        let count = 0;
         
-        table.clear().draw();
-        productsRefs.on("value", snap => {
-            
+        $.ajax({
+            dataType: "json",
+            url: "https://maimai-89309.firebaseio.com/.json?format=export",
+            type: "GET",
+            success: function(data){
+                if(data!== null) {
+                    console.log(data.category)
+                    for (const [key, value] of Object.entries(data)) {
+                        console.log(`${key}: ${value.name}`);
+                    }
+                }
+            }
+        })
+
+
+        
+        
+        productsRefs.once("value", snap => {
+            table.clear().draw();
+            let count = 0;
             snap.forEach(function(childSnapshot){
                 console.log(childSnapshot.key)
                 
-                console.log(count)
+          
                 var field = childSnapshot.val();
                 var categoryName, categoryID;
                 console.log(field, " "+ snap)
                 var id = childSnapshot.key
+                
                 categoryRefs.child(field.category_id).once("value", function(catSnap){
+                    
+                    console.log(count)
                     let imageLabel
                     categoryName = catSnap.val()
                     categoryID = catSnap.key;
-                    count++;
-                    categoryName = categoryName.name
                     
-                    console.log(catSnap.val().name)
-                    let nameLabel = '<td><p id="labelName'+id+'">'+field.name+'</p></td>'
+                    categoryName = categoryName.name
+
+                    let nameLabel = '<td><span id="labelName'+id+'">'+field.name+'</span></td>'
                     if(field.image !== ""){
                         var storageRef = firebase.storage().ref("images/"+field.image);
+                        
                         storageRef.getDownloadURL().then(function(url) {
+                            count++;
                             console.log("getting image...")
                             imageLabel = '<td><img id="labelImage'+id+'" style="width: 50px; height:50px;" src="'+url+'"></td>'
-                            let category = '<td><p id="labelCategory'+id+'">'+categoryName+'</p><input type="hidden" class="hiddenID" value="'+categoryID+'"></td>'
-                            let priceLabel = '<td><p id="labelPrice'+id+'">'+field.pricePerKg+'</p></td>'
-                            let stocksLabel = '<td><p id="labelStocks'+id+'">'+field.stocks+'</p></td>'
+                            let category = '<td><span id="labelCategory'+id+'">'+categoryName+'</span><input type="hidden" class="hiddenID" value="'+categoryID+'"></td>'
+                            let priceLabel = '<td><span id="labelPrice'+id+'">'+field.pricePerKg+'</span></td>'
+                            let stocksLabel = '<td><span id="labelStocks'+id+'">'+field.stocks+'</span></td>'
                             let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
                             let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">DELETE</button>`;
                     
@@ -96,10 +116,29 @@ $(document).ready(function() {
                                 selectedID = id
                                 $("#deletemodal").modal('show')
                             });
+                            
                         });
                         
                     }else{
+                        count++;
                         imageLabel = '<td><img id="labelImage'+id+'" style="width: 50px; height:50px;" src="'+imgDefault+'"></td>'
+                        let category = '<td><p id="labelCategory'+id+'">'+categoryName+'</p><input type="hidden" class="hiddenID" value="'+categoryID+'"></td>'
+                        let priceLabel = '<td><p id="labelPrice'+id+'">'+field.pricePerKg+'</p></td>'
+                        let stocksLabel = '<td><p id="labelStocks'+id+'">'+field.stocks+'</p></td>'
+                        let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
+                        let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">DELETE</button>`;
+                
+                        table.row.add([count, imageLabel, nameLabel, category, priceLabel, stocksLabel,editBtn, delBtn]).draw();
+                        $(`#update${id}`).bind("click", function(event) {
+                            event.preventDefault()
+                            prodRefs = null;
+                            updateEntry(id)
+                        });
+                        $(`#del${id}`).bind("click", function(event) {
+                            event.preventDefault()
+                            selectedID = id
+                            $("#deletemodal").modal('show')
+                        });
                     }
                     
                    

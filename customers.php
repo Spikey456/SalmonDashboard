@@ -15,7 +15,7 @@
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-storage.js"></script>
   <script type="text/javascript" src='js/moment.min.js'></script>
-  <script type="text/javascript" src='js/productOperations.js'></script>
+  <script type="text/javascript" src='js/customerOperations.js'></script>
 <body>
 
 <div class="wrapper">
@@ -27,11 +27,11 @@
 
 
 <!-- ADD DATA -->
-<div class="modal fade" id="productaddmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="customeraddmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Product Data</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add Customer Data</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -41,7 +41,7 @@
       <div class="modal-body">
        	 <div class="form-group">
           <label>Name</label>
-          <input type="text" required class="form-control" id="prodName" placeholder="Enter Product Name">
+          <input type="text" required class="form-control" id="prodName" placeholder="Enter Customer Name">
         </div>
         <div class="form-group">
           <label>Category</label>
@@ -50,19 +50,19 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Product Price per Kilo</label>
-          <input type="number" class="form-control" id="prodPrice" placeholder="Enter Product Price">
+          <label>Customer Price per Kilo</label>
+          <input type="number" class="form-control" id="prodPrice" placeholder="Enter Customer Price">
         </div>
         <div class="form-group">
-          <label>Product Available Stocks</label>
-          <input type="number" class="form-control" id="prodStocks" placeholder="Enter Product Stocks">
+          <label>Customer Available Stocks</label>
+          <input type="number" class="form-control" id="prodStocks" placeholder="Enter Customer Stocks">
         </div>
 
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" id="saveProduct" class="btn btn-primary">Save Data</button>
+        <button type="button" id="saveCustomer" class="btn btn-primary">Save Data</button>
       </div>
      
 
@@ -78,7 +78,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Product Data</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Customer Data</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -92,7 +92,7 @@
         </div>
         <div class="form-group">
           <label>Name</label>
-          <input type="text" required class="form-control" id="prodNameEdit" placeholder="Enter Product Name">
+          <input type="text" required class="form-control" id="prodNameEdit" placeholder="Enter Customer Name">
         </div>
         <div class="form-group">
           <label>Category</label>
@@ -101,12 +101,12 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Product Price per Kilo</label>
-          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Enter Product Price">
+          <label>Customer Price per Kilo</label>
+          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Enter Customer Price">
         </div>
         <div class="form-group">
-          <label>Product Available Stocks</label>
-          <input type="number" class="form-control" id="prodStocksEdit" placeholder="Enter Product Stocks">
+          <label>Customer Available Stocks</label>
+          <input type="number" class="form-control" id="prodStocksEdit" placeholder="Enter Customer Stocks">
         </div>
 
       </div>
@@ -128,7 +128,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete Product Data</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Delete Customer Data</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -155,7 +155,7 @@
 		
 
 		<div class="card" >
-			<div class="card-body" >
+			<div class="card-body">
 
 
 <table id="datatableid" class="table table-bordered table-dark">
@@ -184,8 +184,8 @@
     </div>
     <div class="card">
 			<div class="card-body">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productaddmodal">
-						  Add Data
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#customeraddmodal">
+						  Add Customer
 						</button>
 				
 			</div>

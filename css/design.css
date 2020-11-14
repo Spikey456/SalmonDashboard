@@ -13,6 +13,10 @@ body{
   background: #909091;
 
 }
+.main{
+  margin-left: 300px;
+  margin-right: auto;
+}
 
 .wrapper{
   display: flex;
@@ -22,6 +26,7 @@ body{
 .wrapper .sidebar{
   position: fixed;
   width: 200px;
+  z-index: 1;
   height: 100%;
   background: #FA8072;
   padding: 30px 0;

@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="./css/design.css?v=1">
+	<link rel="stylesheet" type="text/css" href="./css/design.css?version=51">
 	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
@@ -18,7 +18,7 @@
 </head>
 <body>
 
-
+<div class="wrapper">
 	<!--DDDDDDAAAAAASSSSSHHHHHBBBBBBOOOOAAAARRRRDDDD-->
   <?php
     echo $sideBar;
@@ -118,7 +118,7 @@
   </div>
 </div>
 <!--------------------------------------------------------------------------------------------------------------------------->
-
+<div class="main">
 <div class="container" style="padding-top:50px;">
 	<div class="jumnbotron">
 	
@@ -144,7 +144,7 @@
 			</div>
     </div>
     <div class="card">
-			<div class="card-body">
+			<div class="card-body" style="width: 842px;">
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryAddModal">
 						  Add Data
 						</button>
@@ -154,9 +154,9 @@
 
 	</div>
 </div>
+</div>
 
-
-
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

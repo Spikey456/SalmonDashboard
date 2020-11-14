@@ -13,30 +13,41 @@ firebase.initializeApp(firebaseConfig);
 /*
 productSchema = {
     name
+    category_id
+    weight
+    stocks
+    estPrice
 }
 */
+/*
+productSchema = {
+    name
+}
+*/
+
 const dbRef = firebase.database().ref();
-const categoryRefs = dbRef.child('category');
+const rolesRefs = dbRef.child('roles');
+
 
 
 $(document).ready(function() {
     let selectedID = null;
-    let catRef;
+    let rRefs;
     let table = $('#datatableid').DataTable({
         "language": {
-            "emptyTable": 'WALANG DATA',
+            "emptyTable": 'Loading...',
             "zeroRecords": "No records to display"
         }
     });
     refresh();
-    function refresh() {
-        catRef = null;
+    function refresh(){
+        rRefs = null;
         selectedID = null
-        $("#update_id").val("")  
-        $('#categoryNameUpdate').val("")
+        //$("#update_id").val("")  
+        $('#roleNameUpdate').val("")
         let count = 0;
         table.clear().draw();
-        categoryRefs.on("child_added", snap => {
+        rolesRefs.on("child_added", snap => {
             
             count++;
             let field = snap.val();
@@ -66,32 +77,32 @@ $(document).ready(function() {
     }
 
     function updateEntry(id){
-        catRef = firebase.database().ref('category/'+id)
+        rRefs = firebase.database().ref('roles/'+id)
         selectedID = id;
-        let name = $(`#labelName${id}`).html();
+        var name = $(`#labelName${id}`).html();
         console.log($(`#labelName${id}`).html())
-        $("#update_id").val(id)  
-        $('#categoryNameUpdate').val(name)
+        //$("#update_id").val(id)  
+        $('#roleNameUpdate').val(name)
         $("#editmodal").modal("show");
         
     }
 
     $('#updatedata').on('click', function(){
-        let newName = $('#categoryNameUpdate').val()
-        catRef.update({
+        let newName = $('#roleNameUpdate').val()
+        rRefs.update({
             name: newName
         }).then(function(){
             $("#editmodal").modal("hide");
             alert("updated");
-            //refresh();
+            refresh();
         }).catch(function(error) {
             alert(error)
         })
     })
 
-    $("#deleteCategory").on("click", function(){
+    $("#deleteRole").on("click", function(){
         console.log("Deleting " + selectedID);
-        catRef = firebase.database().ref('category/'+selectedID)
+        catRef = firebase.database().ref('roles/'+selectedID)
         catRef.remove().then(function (){
             $("#deletemodal").modal('hide')
             refresh()
@@ -103,23 +114,19 @@ $(document).ready(function() {
     })
 
 
-
-    $("#saveCategory").click(function() {
+    $("#saveRole").click(function() {
         console.log("Inserting!");
-        let newCategory = {};
-        newCategory.name = $("#categoryName").val();
-        categoryRefs.push(newCategory, function() {
+        let newRole = {};
+        newRole.name = $("#roleName").val();
+        rolesRefs.push(newRole, function() {
             document.getElementById("tableBody").innerHTML = "";
             refresh();
         
             
             
-            $("#categoryName").val('');
-            $("#categoryAddModal").modal('hide');
+            $("#roleName").val('');
+            $("#roleaddmodal").modal('hide');
 
         })
     })
-
-    
-   
 })

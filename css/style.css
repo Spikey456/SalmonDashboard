@@ -9,7 +9,7 @@ body{
 	margin: 150px auto;
 }
 .login-left{
-	background: rgba(211, 211, 211, 0.5);
+	background: rgba(250, 128, 114, 0.5);
 	padding: 30px;
 }
 .login-right{
@@ -18,7 +18,8 @@ body{
 }
 .form-control{
 	background-color: transparent !important;
+	color: #fff !important;
 }
-a{
+a, h2, label{
 	color: #fff !important;
 }
