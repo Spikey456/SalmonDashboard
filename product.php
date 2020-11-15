@@ -156,9 +156,9 @@
 		
 
 		<div class="card" >
-			<div class="card-body" >
-
-
+			<div class="card-body text-center">
+      <h5 class="card-title">Products</h5>
+      <hr class="solid">
 <table id="datatableid" class="table table-bordered table-dark">
   <thead>
     <tr>

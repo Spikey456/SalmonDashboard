@@ -125,9 +125,9 @@
 		
 
 		<div class="card" >
-			<div class="card-body" style="width: 842px;">
-
-
+			<div class="card-body text-center" style="width: 842px;">
+      <h5 class="card-title">Roles</h5>
+      <hr class="solid">
 <table id="datatableid" class="table table-bordered table-dark">
   <thead>
     <tr>

@@ -141,6 +141,7 @@ $(document).ready(function() {
                
                 firebase.database().ref('/customers/'+userID).set(newCustomer).then(function(){
                     document.getElementById("tableBody").innerHTML = "";
+                    $("#customeraddmodal").modal('hide');
                     refresh();
                 })
                 
