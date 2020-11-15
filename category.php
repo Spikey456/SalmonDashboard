@@ -15,6 +15,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
     <script type="text/javascript" src="./js/categoryOperations.js"> </script>
+    <script type="text/javascript" src='js/authOperations.js'></script>
 </head>
 <body>
 

@@ -16,6 +16,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-storage.js"></script>
   <script type="text/javascript" src='js/moment.min.js'></script>
   <script type="text/javascript" src='js/productOperations.js'></script>
+  <script type="text/javascript" src='js/authOperations.js'></script>
 <body>
 
 <div class="wrapper">

@@ -14,8 +14,10 @@
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
   <script type="text/javascript" src='js/moment.min.js'></script>
   <script type="text/javascript" src='js/customerOperations.js'></script>
+  <script type="text/javascript" src='js/authOperations.js'></script>
 <body>
 
 <div class="wrapper">
@@ -41,21 +43,22 @@
       <div class="modal-body">
        	 <div class="form-group">
           <label>Name</label>
-          <input type="text" required class="form-control" id="prodName" placeholder="Enter Customer Name">
+          <input type="text" required class="form-control" id="customerName" placeholder="Enter Customer Name">
+        </div>
+       
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" class="form-control" id="customerEmail" placeholder="Enter Customer Email">
         </div>
         <div class="form-group">
-          <label>Category</label>
-          <select class="custom-select" id="prodCat" required>
-            <option selected value="">Select Category...</option>
+          <label>Password</label>
+          <input type="password" class="form-control" id="customerPassword" placeholder="Enter Customer Password">
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select class="custom-select" id="customerRole" required>
+            <option selected value="">Select Role...</option>
           </select>
-        </div>
-        <div class="form-group">
-          <label>Customer Price per Kilo</label>
-          <input type="number" class="form-control" id="prodPrice" placeholder="Enter Customer Price">
-        </div>
-        <div class="form-group">
-          <label>Customer Available Stocks</label>
-          <input type="number" class="form-control" id="prodStocks" placeholder="Enter Customer Stocks">
         </div>
 
 
@@ -87,27 +90,16 @@
 
       <div class="modal-body">
         <div class="form-group">
-          <input id="prodImg" type="image" src="http://upload.wikimedia.org/wikipedia/commons/c/ca/Button-Lightblue.svg" width="30px"/>
-          <input type="file" id="uploadImage" style="display: none;" />
-        </div>
-        <div class="form-group">
           <label>Name</label>
-          <input type="text" required class="form-control" id="prodNameEdit" placeholder="Enter Customer Name">
+          <input type="text" required class="form-control" id="customerNameEdit" placeholder="Enter Customer Name">
         </div>
         <div class="form-group">
-          <label>Category</label>
-          <select class="custom-select" id="prodCatEdit" required>
-            <option selected value="">Select Category...</option>
+          <label>Role</label>
+          <select class="custom-select" id="customerRoleEdit" required>
+            <option selected value="">Select Role...</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Customer Price per Kilo</label>
-          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Enter Customer Price">
-        </div>
-        <div class="form-group">
-          <label>Customer Available Stocks</label>
-          <input type="number" class="form-control" id="prodStocksEdit" placeholder="Enter Customer Stocks">
-        </div>
+
 
       </div>
       <div class="modal-footer">
@@ -140,7 +132,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        <button type="button" id="deleteProduct" class="btn btn-primary">Yes</button>
+        <button type="button" id="deleteCustomer" class="btn btn-primary">Yes</button>
       </div>
    
 
@@ -162,11 +154,9 @@
   <thead>
     <tr>
       <th scope="col">No.</th>
-      <th scope="col">Image</th>
       <th scope="col">Name</th>
-      <th scope="col">Category</th>
-      <th scope="col">Price(per kg)</th>
-      <th scope="col">Stocks</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
       <th scope="col">EDIT</th>
        <th scope="col">DELETE</th>
 

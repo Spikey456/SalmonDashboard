@@ -13,7 +13,17 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
 
+/**
+ * function signUp(){
+    var email = document.getElementById("email");
+    var password = document.getElementById("password");
 
+    const promise = auth.createUserWithEmailAndPassword(email.value, password.value)
+    promise.catch(e => {alert(e.message); return});
+    
+    alert("Signed up");
+}
+ */
 
 function signIn(){
   var email = document.getElementById("email");
@@ -55,7 +65,5 @@ auth.onAuthStateChanged(function(user){
       
       userID = user.uid
       window.location.pathname = "/SalmonDashboard/home.php"
-  }else{
-      alert("No Active User")
   }
 })

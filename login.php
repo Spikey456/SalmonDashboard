@@ -15,12 +15,12 @@
 		<div class="login-left">
 			<h2>Pink Salmon Dashboard</h2> 
 			<div class="form-group">
-				<label>Username</label>
-				<input type="text" name="user" class="form-control" required>
+				<label>Email</label>
+				<input type="text" id="email" class="form-control" required>
 			</div>
 			<div class="form-group">
 				<label>Password</label>
-				<input type="password" name="password" class="form-control" required>
+				<input type="password" id="password" class="form-control" required>
 			</div>
 			<button type="button" onclick="signIn();" class="btn btn-primary">Login</button>
 

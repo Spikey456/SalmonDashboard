@@ -1,7 +1,17 @@
 const auth = firebase.auth();
 
-function signOut(){
-    auth.signOut();
-    window.location.href = "login.php"
-    alert("Signed out");
+async function signOut(){
+    try{
+        firebase.auth().signOut().then(function() {
+            // Sign-out successful.
+            window.location.href = "login.php"
+            alert("Signed out");
+        }).catch(function(error) {
+        // An error happened.
+        });
+        
+    }catch(error){
+        console.log(error)  
+    }
+    
 }
