@@ -124,23 +124,112 @@
 </div>
 <!--------------------------------------------------------------------------------------------------------------------------->
 
-<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade bd-example-modal-lg" id="orderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete Order Data</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Order #</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
        
       <div class="modal-body">
-        <input type="hidden" name="delete_id" id="delete_id">
-        <h5>Do you want to delete this data?</h5>
+        <div class="container-fluid">
+          <div id="orderViewStatus">
+            <div class="row justify-content-around">
+              <div class="col">
+                <label style="font-weight: 600;">Order Status:</label>
+                <p style="text-align:center" id="orderViewStatusDisplay">Henlo</p>
+              </div>
+              <div class="col">
+                <label style="font-weight: 600;">Placed on:</label>
+                <p style="text-align:center" id="orderViewCreateDate"> Henlo again</p>
+              </div>
+              <div class="col">
+                <label style="font-weight: 600;">Customer Name:</label>
+                <p style="text-align:center" id="orderViewCustName"> Henlo again</p>
+              </div>
+              <div class="col">
+                <label style="font-weight: 600;">Email:</label>
+                <p style="text-align:center" id="orderViewCustEmail"> Henlo again@yahoo.com</p>
+              </div>
+            </div>
+          </div>
+          <div id="orderViewProducts">
+            <hr class="solid">
+              <div class="row">
+                <div class="col">
+                  <img style="width:100%; height:100px; object-fit: contain;" src="https://c8.alamy.com/comp/JGTGXF/a-tuna-head-on-ice-at-the-tsukiji-fish-market-JGTGXF.jpg"/>
+                </div>
+                <div class ="col">
+                  <label><span id="orderViewProductQuantity"></span></label>
+                </div>
+                <div class="col">
+                  <label>Qty. <span id="orderViewQuantity[]"></span></label>
+                </div>
+                <div class="col">
+                  <label><span id="orderViewPrice[]"></span></label>
+                </div>
+              </div>
+            <hr class="solid">
+          </div>
+          <div id="orderViewSummary">
+            <h4>Order Summary</h4>
+            <hr class="solid">
+            <div class="col">
+              <div class="row justify-content-end">
+                <div class="col">
+                  <label style="font-weight: 600;">Customer Type: </label>
+                </div>
+                <div class="col">
+                  <p>Reseller</p>
+                </div>
+              </div>
+              <div class="row justify-content-end">
+                <div class="col">
+                  <label style="font-weight: 600;">Shipping Method: </label>
+                </div>
+                <div class="col">
+                  <p>Pickup</p>
+                </div>
+              </div>
+              <div class="row justify-content-end">
+                <div class="col">
+                  <label style="font-weight: 600;">Subtotal: </label>
+                </div>
+                <div class="col">
+                  <p></p>
+                </div>
+              </div>
+              <div class="row justify-content-end">
+                <div class="col">
+                  <label style="font-weight: 600;">Shipping Fee: </label>
+                </div>
+                <div class="col">
+                  <p></p>
+                </div>
+              </div>
+              <hr class="solid">
+              <div class="row justify-content-end">
+                <div class="col">
+                  <h4>Total: </h4>
+                </div>
+                <div class="col">
+                  <p></p>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        <button type="button" id="deleteOrder" class="btn btn-primary">Yes</button>
+        <button type="button" id="changeOrderStatus" class="btn btn-primary">Change Status</button>
+        <button type="button" id="rejectOrder" class="btn btn-primary">Reject</button>
+        <button type="button" id="confirmOrder" class="btn btn-primary">Confirm Order</button>
+        <button type="button" id="cancelOrder" class="btn btn-primary">Cancel Order</button>
+        <button type="button" id="fulfillOrder" class="btn btn-primary">Fulfill Order</button>
       </div>
    
 
@@ -184,7 +273,7 @@
 
 		<div class="card" >
 			<div class="card-body text-center">
-            <h5 class="card-title">Orders</h5>
+            <h3 class="card-title">Orders</h3>
             <hr class="solid">
 <table id="datatableid" class="table table-bordered table-dark">
   <thead>

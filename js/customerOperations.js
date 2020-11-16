@@ -46,42 +46,44 @@ $(document).ready(function() {
     function refresh(){
         custRef = null;
         selectedID = null
-        
-        
+        table.clear().draw();
+        let count = 0;
         customerRefs.on("child_added", snap =>{
-            table.clear().draw();
-            let count = 0;
+            count++;
+            
            
-                console.log(snap.key)
-                var roleName, roleID;
-                var field = snap.val();
-                console.log(field, " "+ snap)
-                var id = snap.key
-                rolesRefs.child(field.role).once("value", function(roleSnap){
-                    roleName = roleSnap.val().name;
-                    roleID = roleSnap.key
-                    console.log(roleID)
-                    count++;
-                    let nameLabel = '<td><span id="labelName'+id+'">'+field.name+'</span></td>'
-                    let emailLabel = '<td><span id="labelEmail'+id+'">'+field.email+'</span></td>'
-                    let roleLabel = '<td><span id="labelRole'+id+'">'+roleName+'</span><input type="hidden" class="hiddenID" value="'+roleID+'"></td>'
-                    let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
-                    let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">DELETE</button>`;
-                    table.row.add([count, nameLabel, emailLabel, roleLabel, editBtn, delBtn]).draw();
+            console.log(snap.key)
+            var roleName, roleID;
+            var field = snap.val();
+            console.log(field, " "+ snap)
+            var id = snap.key
+            rolesRefs.child(field.role).once("value", function(roleSnap){
+                roleName = roleSnap.val().name;
+                roleID = roleSnap.key
+                console.log(roleID)
+                
+                let nameLabel = '<td><span id="labelName'+id+'">'+field.name+'</span></td>'
+                let emailLabel = '<td><span id="labelEmail'+id+'">'+field.email+'</span></td>'
+                let roleLabel = '<td><span id="labelRole'+id+'">'+roleName+'</span><input type="hidden" class="hiddenID" value="'+roleID+'"></td>'
+                let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
+                let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">DELETE</button>`;
+                table.row.add([count, nameLabel, emailLabel, roleLabel, editBtn, delBtn]).draw();
 
-                    $(`#update${id}`).bind("click", function(event) {
-                        event.preventDefault()
-                        prodRefs = null;
-                        updateEntry(id)
-                    });
-                    $(`#del${id}`).bind("click", function(event) {
-                        event.preventDefault()
-                        selectedID = id
-                        $("#deletemodal").modal('show')
-                    });
-                }).catch(function(error){
-                    console.log(error)
-                })
+                console.log("Successful append to table")
+
+                $(`#update${id}`).bind("click", function(event) {
+                    event.preventDefault()
+                    prodRefs = null;
+                    updateEntry(id)
+                });
+                $(`#del${id}`).bind("click", function(event) {
+                    event.preventDefault()
+                    selectedID = id
+                    $("#deletemodal").modal('show')
+                });
+            }).catch(function(error){
+                console.log(error)
+            })
             
         })
     }

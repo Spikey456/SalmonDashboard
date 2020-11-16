@@ -93,12 +93,11 @@ $(document).ready(function() {
 
                     let nameLabel = '<td><span id="labelName'+id+'">'+field.name+'</span></td>'
                     if(field.image !== ""){
-                        var storageRef = firebase.storage().ref("images/"+field.image);
                         
-                        storageRef.getDownloadURL().then(function(url) {
+                       
                             count++;
                             console.log("getting image...")
-                            imageLabel = '<td><img id="labelImage'+id+'" style="width: 50px; height:50px;" src="'+url+'"></td>'
+                            imageLabel = '<td><img id="labelImage'+id+'" style="width: 50px; height:50px;" src="'+field.image+'"></td>'
                             let category = '<td><span id="labelCategory'+id+'">'+categoryName+'</span><input type="hidden" class="hiddenID" value="'+categoryID+'"></td>'
                             let priceLabel = '<td><span id="labelPrice'+id+'">'+field.pricePerKg+'</span></td>'
                             let stocksLabel = '<td><span id="labelStocks'+id+'">'+field.stocks+'</span></td>'
@@ -117,7 +116,7 @@ $(document).ready(function() {
                                 $("#deletemodal").modal('show')
                             });
                             
-                        });
+               
                         
                     }else{
                         count++;
@@ -173,28 +172,29 @@ $(document).ready(function() {
 
     $("#uploadImage").on('change', function(){
         var fileName = $(this)[0].files[0].name
-        console.log($(this)[0].files[0])
         var reader = new FileReader();
         var dataUrl;
         reader.onload = function (e) {
-            console.log(e.currentTarget.result)
             dataUrl = e.currentTarget.result;
             var storageRef = firebase.storage().ref('images/'+fileName);
             storageRef.putString(dataUrl, 'data_url').then(function(snapshot) {
-                alert('Uploaded a base64 string!');
-                prodRefs.update({
-                    image: fileName
-                }).then(function(){
-                    $('#prodImg').attr('src', e.currentTarget.result);
-                    refresh();
-                }).catch(function(err){
-                    console.log(err)
+                storageRef.getDownloadURL().then(function(url){
+                    alert('Uploaded a base64 string!');
+                    console.log(url)
+                    prodRefs.update({
+                        image: url
+                    }).then(function(){
+                        $('#prodImg').attr('src', url);
+                        refresh();
+                    }).catch(function(err){
+                        console.log(err)
+                    })
                 })
+                
             }).catch(function(error){
                 alert(error);
             });
             
-            alert(e.currentTarget.result)
         }
         
         console.log(reader.readAsDataURL($(this)[0].files[0]))

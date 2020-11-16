@@ -24,6 +24,7 @@ ordersSchema = {
 /*
 */
 
+
 //DATETIME:  YYYY-MM-DDThh:mm:ss.sTZD
 const dbRef = firebase.database().ref();
 const orderRefs = dbRef.child("orders")
@@ -79,6 +80,7 @@ $(document).ready(function() {
             let roleLabel = '<td><span id="labelEmail'+orderID+'">'+checkRole(field.user.role)+'</span></td>'
             let createdLabel = '<td><span id="labelRole'+orderID+'">'+localizeDate+'</span></td>'
             let fulfilledLabel = '<td><span id="labelRole'+orderID+'">'+field.fulfilled+'</span></td>'
+            let totalLabel = '<td><span id="labelRole'+orderID+'">'+field.fulfilled+'</span></td>'
             let viewOrderBtn = `<button type="button" id='show`+orderID+`' class="btn btn-success edit">View Order</button>`;
             table.row.add([count, idLabel, statusLabel, nameLabel, roleLabel, createdLabel, fulfilledLabel, viewOrderBtn]).draw();
             $(`#show${orderID}`).bind("click", function(event) {
@@ -98,8 +100,134 @@ $(document).ready(function() {
         }
     }
 
+    function localizeStatus(status){
+        if(status === "UNFULFILLED"){
+            return "Unfulfilled";
+        }else if(status === "ORDER_APPROVED"){
+            return "Approved";
+        }else if(status === "IN_TRANSIT"){
+            return "On the way";
+        }else if(status === "FULFILLED"){
+            return "Fulfilled";
+        }else if(status === "CANCELLED"){
+            return "Cancelled";
+        }else if(status === "REQUEST_FOR_CANCEL"){
+            return "Request for cancellation";
+        }else if(status === "REJECTED"){
+            return "Rejected"
+        }
+    }
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     function showOrderEntry(id){
         console.log(orders[id])
+        let localizeDate = new Date(orders[id].created)
+        let shippingWholeSale = 0;
+        let orderProductView = ``;
+        let orderStatusDisplay = `
+            <div class="row justify-content-around">
+              <div class="col">
+                <label style="font-weight: 600;">Order Status:</label>
+                <p style="text-align:center" id="orderViewStatusDisplay">${localizeStatus(status)}</p>
+              </div>
+              <div class="col">
+                <label style="font-weight: 600;">Placed on:</label>
+                <p style="text-align:center" id="orderViewCreateDate">${localizeDate}</p>
+              </div>
+              <div class="col">
+                <label style="font-weight: 600;">Customer Name:</label>
+                <p style="text-align:center" id="orderViewCustName">${orders[id].user.name}</p>
+              </div>
+              <div class="col">
+                <label style="font-weight: 600;">Email:</label>
+                <p style="text-align:center" id="orderViewCustEmail">${orders[id].user.email}</p>
+              </div>
+            </div>
+        `;
+
+        let orderSummaryDisplay = `
+            <h4>Order Summary</h4>
+            <hr class="solid">
+            <div class="col">
+              <div class="row justify-content-end">
+                <div class="col">
+                  <label style="font-weight: 600;">Customer Type: </label>
+                </div>
+                <div class="col">
+                  <p>${orders[id].user.role === "-MM7epSByKyZ4VVVPBYK" ? "Reseller": "Wholesaler"}</p>
+                </div>
+              </div>
+              <div class="row justify-content-end">
+                <div class="col">
+                  <label style="font-weight: 600;">Shipping Method: </label>
+                </div>
+                <div class="col">
+                  <p>${orders[id].shippingMethod}</p>
+                </div>
+              </div>
+              <div class="row justify-content-end">
+                <div class="col">
+                  <label style="font-weight: 600;">Subtotal: </label>
+                </div>
+                <div class="col">
+                  <p>${"PHP"+numberWithCommas(orders[id].subtotal)}</p>
+                </div>
+              </div>
+              <div class="row justify-content-end">
+                <div class="col">
+                  <label style="font-weight: 600;">Shipping Fee: </label>
+                </div>
+                <div class="col">
+                  <p>${orders[id].user.role === "-MM7epSByKyZ4VVVPBYK" ? "N/A": "PHP1,000"}</p>
+                </div>
+              </div>
+              <hr class="solid">
+              <div class="row justify-content-end">
+                <div class="col">
+                  <h4>Total: </h4>
+                </div>
+                <div class="col">
+                  <p>${"PHP"+numberWithCommas(orders[id].total)}</p>
+                </div>
+              </div>
+              
+            </div>
+        `
+
+        Object.keys(orders[id].products).forEach(key => {
+            let price;
+            if(orders[id].user.role === "-MM7epSByKyZ4VVVPBYK"){
+                price += (orders[id].products[key].pricePerKg - 15) * orders[id].products[key].quantity
+              
+            }else if(orders[id].user.role === "-MM7eqzttvW3oJ3gnyYZ"){
+                price += (orders[id].products[key].pricePerKg - 25) * orders[id].products[key].quantity
+                shippingWholeSale = 1000
+              
+            }
+            console.log(key, orders[id].products[key]);
+            
+            orderProductView += `<hr class="solid">
+            <div class="row">
+                <div class="col">
+                    <img style="width:100%; height:100px; object-fit: contain;" src="${url}"/>
+                </div>
+                <div class ="col">
+                    <label><span id="orderViewProductName[${key}]">${orders[id].products[key].name}</span></label>
+                </div>
+                <div class="col">
+                    <label>Qty. <span id="orderViewQuantity[${key}]"><${orders[id].products[key].quantity}/span></label>
+                </div>
+                <div class="col">
+                    <label><span id="orderViewPrice[${key}]">price</span></label>
+                </div>
+                </div>
+            <hr class="solid">`
+         
+            
+        });
+        $("#orderModal").modal("show");
     }
     $("#saveOrder").on("click", function(){
 
@@ -110,6 +238,7 @@ $(document).ready(function() {
         newOrder.fulfilled = false;
         let products = {}
         let price = 0;
+        let subtotal = 0;
         let customerField, roleField, receiveOption;
         let userID = $("#orderUser").val();
         let pickupDate =$("#orderPickupDate").val();
@@ -153,9 +282,11 @@ $(document).ready(function() {
         
                             if(roleField.name === "Reseller"){
                                 price += (field.pricePerKg - 15) * storedQuantities[count]
+                                subtotal += (field.pricePerKg - 15) * storedQuantities[count]
                                 receiveOption = "Pickup"
                             }else if(roleField.name === "Wholesaler"){
                                 price += (field.pricePerKg - 25) * storedQuantities[count]
+                                subtotal += (field.pricePerKg - 15) * storedQuantities[count]
                                 price += 1000
                                 receiveOption = "Delivery"
                             }
@@ -168,6 +299,7 @@ $(document).ready(function() {
                                 name: field.name,
                                 category_id: field.category_id,
                                 pricePerKg: field.pricePerKg,
+                                quantity: storedQuantities[count],
                                 stock: field.stocks
                             }
                             console.log(addProduct)
@@ -181,6 +313,7 @@ $(document).ready(function() {
                 console.log("should push...")
                 newOrder.pickupDate = pickupDate;
                 newOrder.total = price;
+                newOrder.subtotal = subtotal;
                 newOrder.products = products
                 newOrder.shippingMethod = receiveOption;
                 console.log(newOrder)
