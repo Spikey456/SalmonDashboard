@@ -211,7 +211,7 @@ $(document).ready(function() {
             orderProductView += `<hr class="solid">
             <div class="row">
                 <div class="col">
-                    <img style="width:100%; height:100px; object-fit: contain;" src="${url}"/>
+                    <img style="width:100%; height:100px; object-fit: contain;" src="${orders[id].products[key].image}"/>
                 </div>
                 <div class ="col">
                     <label><span id="orderViewProductName[${key}]">${orders[id].products[key].name}</span></label>
@@ -235,7 +235,7 @@ $(document).ready(function() {
         let newOrder = {}
         newOrder.created = getDate;
         newOrder.status = "UNFULFILLED";
-        newOrder.fulfilled = false;
+        newOrder.fulfilled = "N/A";
         let products = {}
         let price = 0;
         let subtotal = 0;
