@@ -47,7 +47,7 @@ function signIn(){
   alert("Signed in! Welcome "+ email.value+"!");
 }
 
-
+/*
 auth.onAuthStateChanged(function(user){
   
   if(user){
@@ -66,4 +66,4 @@ auth.onAuthStateChanged(function(user){
       userID = user.uid
       window.location.pathname = "/SalmonDashboard/home.php"
   }
-})
+})*/

@@ -33,7 +33,8 @@ const rolesRefs = dbRef.child('roles');
 
 
 $(document).ready(function() {
-    var selectedID, custRef;
+    var selectedID, orRef;
+    var orders = {};
     var table = $('#datatableid').DataTable({
         "language": {
             "emptyTable": 'Loading...',
@@ -54,13 +55,51 @@ $(document).ready(function() {
             $('[id^=orderProduct]').append('<option value="'+id+'">'+field.name+'</option>')
         })
     }
-    
+    refresh()
     function refresh(){
-
+        let count = 0
+        orders = {};
+        table.clear().draw();
+        orderRefs.on("child_added", snap => {
+            count++;
+            let field = snap.val();
+            
+            let orderID = snap.key;
+            field.id = orderID
+            console.log(field)
+            console.log(orderID)
+            orders[orderID] = field
+            let localizeDate = new Date(field.created)
+            localizeDate = localizeDate.getFullYear() +"-"+ localizeDate.getMonth() + "-" + localizeDate.getDay();
+            console.log(localizeDate)
+            console.log(orders)
+            let idLabel = '<td><span id="labelName'+orderID+'">'+orderID+'</span></td>'
+            let statusLabel = '<td><span id="labelEmail'+orderID+'">'+field.status+'</span></td>'
+            let nameLabel = '<td><span id="labelEmail'+orderID+'">'+field.user.name+'</span></td>'
+            let roleLabel = '<td><span id="labelEmail'+orderID+'">'+checkRole(field.user.role)+'</span></td>'
+            let createdLabel = '<td><span id="labelRole'+orderID+'">'+localizeDate+'</span></td>'
+            let fulfilledLabel = '<td><span id="labelRole'+orderID+'">'+field.fulfilled+'</span></td>'
+            let viewOrderBtn = `<button type="button" id='show`+orderID+`' class="btn btn-success edit">View Order</button>`;
+            table.row.add([count, idLabel, statusLabel, nameLabel, roleLabel, createdLabel, fulfilledLabel, viewOrderBtn]).draw();
+            $(`#show${orderID}`).bind("click", function(event) {
+                event.preventDefault()
+                prodRefs = null;
+                showOrderEntry(orderID)
+            });
+        })
+        
     }
 
-    function updateEntry(id){
+    function checkRole(roleID){
+        if(roleID === "-MM7epSByKyZ4VVVPBYK"){
+            return "Reseller";
+        }else if(roleID === "-MM7eqzttvW3oJ3gnyYZ" ){
+            return "Wholesaler";
+        }
+    }
 
+    function showOrderEntry(id){
+        console.log(orders[id])
     }
     $("#saveOrder").on("click", function(){
 
@@ -68,6 +107,7 @@ $(document).ready(function() {
         let newOrder = {}
         newOrder.created = getDate;
         newOrder.status = "UNFULFILLED";
+        newOrder.fulfilled = false;
         let products = {}
         let price = 0;
         let customerField, roleField, receiveOption;

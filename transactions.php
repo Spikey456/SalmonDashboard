@@ -124,6 +124,30 @@
 </div>
 <!--------------------------------------------------------------------------------------------------------------------------->
 
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Order Data</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       
+      <div class="modal-body">
+        <input type="hidden" name="delete_id" id="delete_id">
+        <h5>Do you want to delete this data?</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" id="deleteOrder" class="btn btn-primary">Yes</button>
+      </div>
+   
+
+    </div>
+  </div>
+</div>
+
 <!-------------------------------------------------------------------------------------------------------------->
 
 <!-- DELETE FORM -->
@@ -150,6 +174,7 @@
     </div>
   </div>
 </div>
+
 <!--------------------------------------------------------------------------------------------------------------------------->
 <div class="main">
 <div class="container container-fluid" style="padding-top:50px;">
@@ -165,11 +190,13 @@
   <thead>
     <tr>
       <th scope="col">No.</th>
-      <th scope="col">Name</th>
-      <th scope="col">Email</th>
+      <th scope="col">Reference ID</th>
+      <th scope="col">Status</th>
+      <th scope="col">Customer</th>
       <th scope="col">Role</th>
-      <th scope="col">EDIT</th>
-       <th scope="col">DELETE</th>
+      <th scope="col">Create Date</th>
+      <th scope="col">Fulfilled</th>
+       <th scope="col">Action</th>
 
     </tr>
   </thead>
