@@ -71,7 +71,7 @@ $(document).ready(function() {
             console.log(orderID)
             orders[orderID] = field
             let localizeDate = new Date(field.created)
-            localizeDate = localizeDate.getFullYear() +"-"+ localizeDate.getMonth() + "-" + localizeDate.getDay();
+            localizeDate = localizeDate.toISOString().split('T')[0];
             console.log(localizeDate)
             console.log(orders)
             let idLabel = '<td><span id="labelName'+orderID+'">'+orderID+'</span></td>'
@@ -118,19 +118,20 @@ $(document).ready(function() {
         }
     }
     function numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return "PHP"+x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     function showOrderEntry(id){
         console.log(orders[id])
         let localizeDate = new Date(orders[id].created)
+        localizeDate = localizeDate.toISOString().split('T')[0];
         let shippingWholeSale = 0;
         let orderProductView = ``;
         let orderStatusDisplay = `
             <div class="row justify-content-around">
               <div class="col">
                 <label style="font-weight: 600;">Order Status:</label>
-                <p style="text-align:center" id="orderViewStatusDisplay">${localizeStatus(status)}</p>
+                <p style="text-align:center" id="orderViewStatusDisplay">${localizeStatus(orders[id].status)}</p>
               </div>
               <div class="col">
                 <label style="font-weight: 600;">Placed on:</label>
@@ -172,7 +173,7 @@ $(document).ready(function() {
                   <label style="font-weight: 600;">Subtotal: </label>
                 </div>
                 <div class="col">
-                  <p>${"PHP"+numberWithCommas(orders[id].subtotal)}</p>
+                  <p>${numberWithCommas(orders[id].subtotal)}</p>
                 </div>
               </div>
               <div class="row justify-content-end">
@@ -189,7 +190,7 @@ $(document).ready(function() {
                   <h4>Total: </h4>
                 </div>
                 <div class="col">
-                  <p>${"PHP"+numberWithCommas(orders[id].total)}</p>
+                  <p>${numberWithCommas(orders[id].total)}</p>
                 </div>
               </div>
               
@@ -197,19 +198,21 @@ $(document).ready(function() {
         `
 
         Object.keys(orders[id].products).forEach(key => {
-            let price;
+            let price = 0;
             if(orders[id].user.role === "-MM7epSByKyZ4VVVPBYK"){
-                price += (orders[id].products[key].pricePerKg - 15) * orders[id].products[key].quantity
+                price += (parseInt(orders[id].products[key].pricePerKg, 10) - 15) * parseInt(orders[id].products[key].quantity, 10)
+                console.log(price)
               
             }else if(orders[id].user.role === "-MM7eqzttvW3oJ3gnyYZ"){
-                price += (orders[id].products[key].pricePerKg - 25) * orders[id].products[key].quantity
+                price += (parseInt(orders[id].products[key].pricePerKg, 10) - 25) * parseInt(orders[id].products[key].quantity, 10)
+                console.log(price)
                 shippingWholeSale = 1000
               
             }
             console.log(key, orders[id].products[key]);
             
             orderProductView += `<hr class="solid">
-            <div class="row">
+            <div id=${key} class="row">
                 <div class="col">
                     <img style="width:100%; height:100px; object-fit: contain;" src="${orders[id].products[key].image}"/>
                 </div>
@@ -217,16 +220,19 @@ $(document).ready(function() {
                     <label><span id="orderViewProductName[${key}]">${orders[id].products[key].name}</span></label>
                 </div>
                 <div class="col">
-                    <label>Qty. <span id="orderViewQuantity[${key}]"><${orders[id].products[key].quantity}/span></label>
+                    <label>Qty. <span id="orderViewQuantity[${key}]">${orders[id].products[key].quantity}</span></label>
                 </div>
                 <div class="col">
-                    <label><span id="orderViewPrice[${key}]">price</span></label>
+                    <label><span id="orderViewPrice[${key}]">${numberWithCommas(price)}</span></label>
                 </div>
                 </div>
             <hr class="solid">`
          
             
         });
+        $("#orderViewStatus").html(orderStatusDisplay)
+        $("#orderViewProducts").html(orderProductView)
+        $("#orderViewSummary").html(orderSummaryDisplay)
         $("#orderModal").modal("show");
     }
     $("#saveOrder").on("click", function(){
@@ -282,11 +288,11 @@ $(document).ready(function() {
         
                             if(roleField.name === "Reseller"){
                                 price += (field.pricePerKg - 15) * storedQuantities[count]
-                                subtotal += (field.pricePerKg - 15) * storedQuantities[count]
+                                subtotal += price
                                 receiveOption = "Pickup"
                             }else if(roleField.name === "Wholesaler"){
                                 price += (field.pricePerKg - 25) * storedQuantities[count]
-                                subtotal += (field.pricePerKg - 15) * storedQuantities[count]
+                                subtotal += price
                                 price += 1000
                                 receiveOption = "Delivery"
                             }
