@@ -24,11 +24,11 @@ const auth = firebase.auth();
     alert("Signed up");
 }
  */
-
+modalLoading.init(true);
 function signIn(){
   var email = document.getElementById("email");
   var password = document.getElementById("password");
-
+  
   const promise = auth.signInWithEmailAndPassword(email.value, password.value).then(user => {
     // Get the user's ID token and save it in the session cookie.
         return firebase.auth().currentUser.getIdToken(true).then(function (token) {

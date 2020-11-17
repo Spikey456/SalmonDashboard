@@ -137,25 +137,26 @@
       <th scope="col">EDIT</th>
        <th scope="col">DELETE</th>
 
-    </tr>
-  </thead>
+            </tr>
+          </thead>
 
 
-  <tbody id="tableBody">
+          <tbody id="tableBody">
 
-  </tbody>
+          </tbody>
 
-</table>
+        </table>
 				
-			</div>
-    </div>
-    <div class="card">
-			<div class="card-body">
+      </div>
+      <div class="card-body">
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roleaddmodal">
 						  Add Role
 						</button>
 				
 			</div>
+    </div>
+    <div class="card">
+			
 		</div>
 
 	</div>

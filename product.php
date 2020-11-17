@@ -5,7 +5,11 @@
 <html >
 <head>
 <meta charset="utf-8">
+<<<<<<< Updated upstream
 	
+=======
+  
+>>>>>>> Stashed changes
 	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
@@ -52,8 +56,20 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Product Price per Kilo</label>
-          <input type="number" class="form-control" id="prodPrice" placeholder="Enter Product Price">
+          <label>Supplier Price</label>
+          <input type="number" class="form-control" id="prodSupplierPrice" placeholder="Supplier Price">
+        </div>
+        <div class="form-group">
+          <label>Shop Price</label>
+          <input type="number" class="form-control" id="prodShopPrice" placeholder="Shop Price">
+        </div>
+        <div class="form-group">
+          <label>Reseller Price</label>
+          <input type="number" class="form-control" id="prodResellerPrice" placeholder="Reseller Price">
+        </div>
+        <div class="form-group">
+          <label>Wholesaler Price</label>
+          <input type="number" class="form-control" id="prodWholesalerPrice" placeholder="Wholesaler Price">
         </div>
         <div class="form-group">
           <label>Product Available Stocks</label>
@@ -80,7 +96,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Product Data</h5>
+        <h5 class="modal-title" id="prodTitle">Edit Product Data</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -103,8 +119,20 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Product Price per Kilo</label>
-          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Enter Product Price">
+          <label>Supplier Price</label>
+          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Supplier Price">
+        </div>
+        <div class="form-group">
+          <label>Shop Price</label>
+          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Shop Price">
+        </div>
+        <div class="form-group">
+          <label>Reseller Price</label>
+          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Reseller Price">
+        </div>
+        <div class="form-group">
+          <label>Wholesaler Price</label>
+          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Wholesaler Price">
         </div>
         <div class="form-group">
           <label>Product Available Stocks</label>
@@ -161,16 +189,20 @@
       <h5 class="card-title">Products</h5>
       <hr class="solid">
 <table id="datatableid" class="table table-bordered table-light">
+<<<<<<< Updated upstream
   <thead class="thead-light">s
+=======
+  <thead class="thead-light">
+>>>>>>> Stashed changes
     <tr>
       <th scope="col">No.</th>
       <th scope="col">Image</th>
       <th scope="col">Name</th>
       <th scope="col">Category</th>
-      <th scope="col">Price(per kg)</th>
+      <th scope="col">Price</th>
       <th scope="col">Stocks</th>
+      <th scope="col">Status</th>
       <th scope="col">EDIT</th>
-       <th scope="col">DELETE</th>
 
     </tr>
   </thead>
@@ -186,7 +218,7 @@
     </div>
     <div class="card">
 			<div class="card-body">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productaddmodal">
+				<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#productaddmodal">
 						  Add Data
 						</button>
 				

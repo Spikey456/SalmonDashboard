@@ -101,10 +101,11 @@ $(document).ready(function() {
                             let category = '<td><span id="labelCategory'+id+'">'+categoryName+'</span><input type="hidden" class="hiddenID" value="'+categoryID+'"></td>'
                             let priceLabel = '<td><span id="labelPrice'+id+'">'+field.pricePerKg+'</span></td>'
                             let stocksLabel = '<td><span id="labelStocks'+id+'">'+field.stocks+'</span></td>'
+                            let statusLabel = '<td><p id="labelStatus'+id+'">'+(field.isOutOfStock ? "Out of stock": (field.isPublished ? "Published": "Not Published"))+'</p></td>';
                             let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
-                            let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">DELETE</button>`;
+
                     
-                            table.row.add([count, imageLabel, nameLabel, category, priceLabel, stocksLabel,editBtn, delBtn]).draw();
+                            table.row.add([count, imageLabel, nameLabel, category, priceLabel, stocksLabel, statusLabel, editBtn]).draw();
                             $(`#update${id}`).bind("click", function(event) {
                                 event.preventDefault()
                                 prodRefs = null;
@@ -124,20 +125,17 @@ $(document).ready(function() {
                         let category = '<td><p id="labelCategory'+id+'">'+categoryName+'</p><input type="hidden" class="hiddenID" value="'+categoryID+'"></td>'
                         let priceLabel = '<td><p id="labelPrice'+id+'">'+field.pricePerKg+'</p></td>'
                         let stocksLabel = '<td><p id="labelStocks'+id+'">'+field.stocks+'</p></td>'
+                        let statusLabel = '<td><p id="labelStatus'+id+'">'+(field.isOutOfStock ? "Out of stock": (field.isPublished ? "Published": "Not Published"))+'</p></td>';
                         let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
-                        let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">DELETE</button>`;
+
                 
-                        table.row.add([count, imageLabel, nameLabel, category, priceLabel, stocksLabel,editBtn, delBtn]).draw();
+                        table.row.add([count, imageLabel, nameLabel, category, priceLabel, stocksLabel, statusLabel, editBtn]).draw();
                         $(`#update${id}`).bind("click", function(event) {
                             event.preventDefault()
                             prodRefs = null;
                             updateEntry(id)
                         });
-                        $(`#del${id}`).bind("click", function(event) {
-                            event.preventDefault()
-                            selectedID = id
-                            $("#deletemodal").modal('show')
-                        });
+                      
                     }
                     
                    
@@ -156,6 +154,7 @@ $(document).ready(function() {
         var stocks = $(`#labelStocks${id}`).html();
         var category_id = $(`#labelCategory${id}`).siblings(".hiddenID").val();
         var img = document.getElementById(`labelImage${id}`).src;
+        $("#prodTitle").val(name);
         $("#prodNameEdit").val(name)
         $("#prodPriceEdit").val(price)
         $("#prodStocksEdit").val(stocks)
@@ -220,6 +219,8 @@ $(document).ready(function() {
     })
 
     $("#deleteProduct").on("click", function(){
+
+        /*
         console.log("Deleting " + selectedID);
         prodRefs = firebase.database().ref('products/'+selectedID)
         prodRefs.remove().then(function (){
@@ -229,7 +230,7 @@ $(document).ready(function() {
             alert("Deleted");
         }).catch(function(error){
             alert(error)
-        });
+        });*/
     })
 
     $("#saveProduct").click(function() {
