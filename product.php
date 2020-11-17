@@ -189,11 +189,7 @@
       <h5 class="card-title">Products</h5>
       <hr class="solid">
 <table id="datatableid" class="table table-bordered table-light">
-<<<<<<< Updated upstream
-  <thead class="thead-light">s
-=======
   <thead class="thead-light">
->>>>>>> Stashed changes
     <tr>
       <th scope="col">No.</th>
       <th scope="col">Image</th>
