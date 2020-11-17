@@ -30,8 +30,8 @@
 
 
 <!-- ADD DATA -->
-<div class="modal fade" id="orderaddmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade bd-example-modal-lg" id="orderaddmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add Order Data</h5>
@@ -50,20 +50,23 @@
         </div>
         <div class="form-group">
           <label>Product</label>
-          <div id="selectGroup" class="row" style="padding-bottom: 10px;" >
-            <div class="col-8">
-                <select class="custom-select"  id="orderProduct[0]" required>
-                    <option selected value="">Select Product...</option>
-                </select>
+          <div id="selectGroup" style="padding-bottom: 10px;" >
+            <div class="row" style="padding-bottom:10px;">
+              <div class="col-8">
+                  <select class="custom-select"  id="orderProduct[0]" required>
+                      <option default value="">Select Product...</option>
+                  </select>
+              </div>
+              <div class="col-3" style="padding: 0px 5px; margin-right:10px;">
+                  <input type="number" required class="form-control" id="orderQuantity[0]" placeholder="Qty.">
+              </div>
+              
             </div>
-            <div class="col">
-                <input type="number" required class="form-control" id="orderQuantity[0]" placeholder="Qty.">
-            </div>
-            
             
           </div>
           <input type="hidden"  id="estPrice" />
           <button type="button" class="btn btn-success" id="addMoreProducts">Add More Products</button>
+          <button type="button" class="btn btn-danger" hidden id="removeProduct">Remove</button>
         </div>
        
         <div class="form-group">
@@ -285,7 +288,7 @@
       <th scope="col">Customer</th>
       <th scope="col">Role</th>
       <th scope="col">Create Date</th>
-      <th scope="col">Fulfilled</th>
+      <th scope="col">Fulfilled Date</th>
        <th scope="col">Action</th>
 
     </tr>

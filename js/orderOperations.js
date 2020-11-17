@@ -47,9 +47,10 @@ $(document).ready(function() {
         let field = snap.val();
         let id = snap.key
         console.log(snap)
-        $("#orderUser").append('<option value="'+id+'">'+field.email+'</option>')
+        $("#orderUser").append('<option value="'+id+'">'+field.name+'&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;'+field.email+'</option>')
     });
     function refreshProductList(){
+        $('[id^=orderProduct]').html(`<option default value="">Select Product...</option>`);
         productsRefs.on("child_added", snap =>{
             let field = snap.val();
             let id = snap.key;
@@ -83,11 +84,17 @@ $(document).ready(function() {
             let totalLabel = '<td><span id="labelRole'+orderID+'">'+field.fulfilled+'</span></td>'
             let viewOrderBtn = `<button type="button" id='show`+orderID+`' class="btn btn-success edit">View Order</button>`;
             table.row.add([count, idLabel, statusLabel, nameLabel, roleLabel, createdLabel, fulfilledLabel, viewOrderBtn]).draw();
-            $(`#show${orderID}`).bind("click", function(event) {
+            $("#datatableid").on("click", `#show${orderID}`, function(){
+                // your code goes here
                 event.preventDefault()
                 prodRefs = null;
                 showOrderEntry(orderID)
-            });
+             });
+            /*$(`#show${orderID}`).bind("click", function(event) {
+                event.preventDefault()
+                prodRefs = null;
+                showOrderEntry(orderID)
+            });*/
         })
         
     }
@@ -119,6 +126,37 @@ $(document).ready(function() {
     }
     function numberWithCommas(x) {
         return "PHP"+x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    let addProductCounter = 1;
+    $("#addMoreProducts").on("click", function(){
+        console.log("Adding more products");
+        $("#selectGroup").append(`
+        <div class="row" style="padding-bottom:10px;">
+            <div class="col-8">
+                <select class="custom-select"  id="orderProduct[${addProductCounter}]" required>
+                    <option selected value="">Select Product...</option>
+                </select>
+            </div>
+            <div class="col-3" style="padding: 0px 5px; margin-right:10px;">
+                <input type="number" required class="form-control" id="orderQuantity[${addProductCounter}]" placeholder="Qty.">
+            </div>
+            <div class="col" style="padding: 0px 5px;">
+                <button type="button" class="btn btn-danger" id="removeThis[${addProductCounter}]">-</button>
+              </div>
+        </div>
+        `);
+        refreshProductList();
+        $(`#removeThis[${addProductCounter}]`).bind('click', function(event){
+            event.preventDefault()
+            console.log("dddd");
+            addProductCounter--;
+        })
+        addProductCounter++;
+    })
+    
+
+    function removeThisProduct(num){
+        $(`#row[${num}]`).remove();
     }
 
     function showOrderEntry(id){
@@ -200,11 +238,11 @@ $(document).ready(function() {
         Object.keys(orders[id].products).forEach(key => {
             let price = 0;
             if(orders[id].user.role === "-MM7epSByKyZ4VVVPBYK"){
-                price += (parseInt(orders[id].products[key].pricePerKg, 10) - 15) * parseInt(orders[id].products[key].quantity, 10)
+                price += parseInt(orders[id].products[key].resellerPrice, 10) * parseInt(orders[id].products[key].quantity, 10)
                 console.log(price)
               
             }else if(orders[id].user.role === "-MM7eqzttvW3oJ3gnyYZ"){
-                price += (parseInt(orders[id].products[key].pricePerKg, 10) - 25) * parseInt(orders[id].products[key].quantity, 10)
+                price += parseInt(orders[id].products[key].wholeSalePrice, 10) * parseInt(orders[id].products[key].quantity, 10)
                 console.log(price)
                 shippingWholeSale = 1000
               
@@ -287,29 +325,49 @@ $(document).ready(function() {
                             console.log(snap.val())
         
                             if(roleField.name === "Reseller"){
-                                price += (field.pricePerKg - 15) * storedQuantities[count]
-                                subtotal += price
-                                receiveOption = "Pickup"
+                                if(storedQuantities[count] > 15){
+                                    price += (field.resellerPrice) * storedQuantities[count]
+                                    subtotal += price
+                                    receiveOption = "Pickup"
+                                }else{
+                                    price += (field.pricePerKg) * storedQuantities[count]
+                                    subtotal += price
+                                }
+                                
                             }else if(roleField.name === "Wholesaler"){
-                                price += (field.pricePerKg - 25) * storedQuantities[count]
-                                subtotal += price
-                                price += 1000
-                                receiveOption = "Delivery"
+                                if(storedQuantities[count] > 30){
+                                    price += (field.wholeSalePrice) * storedQuantities[count]
+                                    subtotal += price
+                                    price += 1000
+                                    receiveOption = "Delivery"
+                                }else{
+                                    price += (field.resellerPrice) * storedQuantities[count]
+                                    subtotal += price
+                                    price += 1000
+                                    receiveOption = "Delivery"
+                                }
+                                
                             }
                             else{
                                 price = field.pricePerKg
+                                subtotal += price
+                                receiveOption = "Pickup"
                             }
-                            
+                            let deductStocks = field.stocks - storedQuantities[count]
                             let addProduct = {
                                 image: field.image,
                                 name: field.name,
                                 category_id: field.category_id,
                                 pricePerKg: field.pricePerKg,
+                                resellerPrice: field.resellerPrice,
+                                wholeSalePrice: field.wholeSalePrice,
+                                shopPrice: field.shopPrice,
                                 quantity: storedQuantities[count],
                                 stock: field.stocks
                             }
                             console.log(addProduct)
                             products[productId] = addProduct;
+                            
                             
                         }
                     })
@@ -325,6 +383,12 @@ $(document).ready(function() {
                 console.log(newOrder)
                 orderRefs.push(newOrder, function(){
                     alert("Order successfully created!")
+                    $("#orderUser").val("");
+                    $("#orderPickupDate").val("");
+                    $('[id^=orderQuantity]').val("");
+                    selectArray = null;
+                    quantityArray = null;
+                    $('[id^=orderProduct]').val("");
                     $("#orderaddmodal").modal("hide")
                 })
                 

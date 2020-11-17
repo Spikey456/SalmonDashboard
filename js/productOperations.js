@@ -33,6 +33,7 @@ const imgDefault = "https://bppl.kkp.go.id/uploads/publikasi/karya_tulis_ilmiah/
 $(document).ready(function() {
     let selectedID = null;
     let prodRefs;
+    let products = {}
     let table = $('#datatableid').DataTable({
         "language": {
             "emptyTable": 'Loading...',
@@ -52,7 +53,7 @@ $(document).ready(function() {
  
 
     function refresh(){
-        
+        products = {}
         $.ajax({
             dataType: "json",
             url: "https://maimai-89309.firebaseio.com/.json?format=export",
@@ -100,23 +101,26 @@ $(document).ready(function() {
                             imageLabel = '<td><img id="labelImage'+id+'" style="width: 50px; height:50px;" src="'+field.image+'"></td>'
                             let category = '<td><span id="labelCategory'+id+'">'+categoryName+'</span><input type="hidden" class="hiddenID" value="'+categoryID+'"></td>'
                             let priceLabel = '<td><span id="labelPrice'+id+'">'+field.pricePerKg+'</span></td>'
+                            let wholeSaleLabel = '<td><span id="labelWholeSalePrice'+id+'">'+field.wholeSalePrice+'</span></td>'
+                            let resellLabel = '<td><span id="labelResellPrice'+id+'">'+field.resellerPrice+'</span></td>'
+                            let shopLabel = '<td><span id="labelShopPrice'+id+'">'+field.shopPrice+'</span></td>'
                             let stocksLabel = '<td><span id="labelStocks'+id+'">'+field.stocks+'</span></td>'
                             let statusLabel = '<td><p id="labelStatus'+id+'">'+(field.isOutOfStock ? "Out of stock": (field.isPublished ? "Published": "Not Published"))+'</p></td>';
                             let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
 
                     
-                            table.row.add([count, imageLabel, nameLabel, category, priceLabel, stocksLabel, statusLabel, editBtn]).draw();
+                            table.row.add([count, imageLabel, nameLabel, category, priceLabel, shopLabel, resellLabel, wholeSaleLabel, stocksLabel, statusLabel, editBtn]).draw();
                             $(`#update${id}`).bind("click", function(event) {
                                 event.preventDefault()
                                 prodRefs = null;
                                 updateEntry(id)
                             });
-                            $(`#del${id}`).bind("click", function(event) {
-                                event.preventDefault()
-                                selectedID = id
-                                $("#deletemodal").modal('show')
-                            });
                             
+                            let visibility = field.isPublished;
+                            let status = {
+                                visibility
+                            }
+                            products[id] = status
                
                         
                     }else{
@@ -124,12 +128,15 @@ $(document).ready(function() {
                         imageLabel = '<td><img id="labelImage'+id+'" style="width: 50px; height:50px;" src="'+imgDefault+'"></td>'
                         let category = '<td><p id="labelCategory'+id+'">'+categoryName+'</p><input type="hidden" class="hiddenID" value="'+categoryID+'"></td>'
                         let priceLabel = '<td><p id="labelPrice'+id+'">'+field.pricePerKg+'</p></td>'
-                        let stocksLabel = '<td><p id="labelStocks'+id+'">'+field.stocks+'</p></td>'
+                        let wholeSaleLabel = '<td><span id="labelWholeSalePrice'+id+'">'+field.wholeSalePrice+'</span></td>'
+                        let resellLabel = '<td><span id="labelResellPrice'+id+'">'+field.resellerPrice+'</span></td>'
+                        let shopLabel = '<td><span id="labelShopPrice'+id+'">'+field.shopPrice+'</span></td>'
+                        let stocksLabel = '<td><span id="labelStocks'+id+'">'+field.stocks+'</span></td>'
                         let statusLabel = '<td><p id="labelStatus'+id+'">'+(field.isOutOfStock ? "Out of stock": (field.isPublished ? "Published": "Not Published"))+'</p></td>';
                         let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
 
                 
-                        table.row.add([count, imageLabel, nameLabel, category, priceLabel, stocksLabel, statusLabel, editBtn]).draw();
+                        table.row.add([count, imageLabel, nameLabel, category, priceLabel, shopLabel, resellLabel, wholeSaleLabel, stocksLabel, statusLabel, editBtn]).draw();
                         $(`#update${id}`).bind("click", function(event) {
                             event.preventDefault()
                             prodRefs = null;
@@ -146,21 +153,41 @@ $(document).ready(function() {
         })
     }
 
+
+
+    $("#visibilityCheckBox").on('click', function(){
+        console.log($("#visibilityCheckBox").is(":checked"))
+        if($("#visibilityCheckBox").is(":checked")){
+            console.log("TRUEEE")
+        }else{
+            console.log("FALSEEEE")
+        }
+    })
+
     function updateEntry(id) {
+        
         prodRefs = firebase.database().ref('products/'+id)
         selectedID = id
         var name = $(`#labelName${id}`).html();
         var price = $(`#labelPrice${id}`).html();
+        var shopPrice = $(`#labelShopPrice${id}`).html();
+        var resellPrice = $(`#labelResellPrice${id}`).html();
+        var wholeSalePrice = $(`#labelWholeSalePrice${id}`).html();
         var stocks = $(`#labelStocks${id}`).html();
         var category_id = $(`#labelCategory${id}`).siblings(".hiddenID").val();
         var img = document.getElementById(`labelImage${id}`).src;
-        $("#prodTitle").val(name);
+        $("#visibilityCheckBox").prop('checked', products[id].visibility)
+        $("#prodTitle").html(name);
         $("#prodNameEdit").val(name)
-        $("#prodPriceEdit").val(price)
+        $("#prodSupplierPriceEdit").val(price)
+        $("#prodShopPriceEdit").val(shopPrice)
+        $("#prodResellerPriceEdit").val(resellPrice)
+        $("#prodWholesalerPriceEdit").val(wholeSalePrice)
         $("#prodStocksEdit").val(stocks)
         $("#prodCatEdit").val(category_id)
         $("#prodImg").attr("src",img)
         console.log(img)
+        console.log($("#visibilityCheckBox").is(":checked"))
         $(`#editmodal`).modal("show")
         
     }
@@ -203,12 +230,20 @@ $(document).ready(function() {
     $('#updatedata').on("click", function() {
         let newName = $("#prodNameEdit").val();
         let newCategory = $("#prodCatEdit").val();
-        let newPrice = $("#prodPriceEdit").val();
+        let newPrice = $("#prodSupplierPriceEdit").val();
+        let newShopPrice = $("#prodShopPriceEdit").val();
+        let newResellerPrice = $("#prodResellerPriceEdit").val();
+        let newWholesalerPrice = $("#prodWholesalerPriceEdit").val();
+        let visibility = $("#visibilityCheckBox").is(":checked")
         let newStocks = $("#prodStocksEdit").val();
         prodRefs.update({
             name: newName,
             category_id: newCategory,
             pricePerKg: newPrice,
+            resellerPrice: newResellerPrice,
+            shopPrice: newShopPrice,
+            wholeSalePrice: newWholesalerPrice,
+            isPublished: visibility,
             stocks: newStocks
         }).then(function(){
             refresh();
@@ -238,8 +273,11 @@ $(document).ready(function() {
         let newProduct = {};
         newProduct.name = $("#prodName").val();
         newProduct.category_id =  $("#prodCat").val();
-        newProduct.pricePerKg =  $("#prodPrice").val();
+        newProduct.pricePerKg =  $("#prodSupplierPrice").val();
         newProduct.stocks =  $("#prodStocks").val();
+        newProduct.resellerPrice = $("#prodResellerPrice").val();
+        newProduct.shopPrice = $("#prodShopPrice").val();
+        newProduct.wholeSalePrice = $("#prodWholesalerPrice").val();
         newProduct.image = ''
         console.log(newProduct)
         productsRefs.push(newProduct, function() {

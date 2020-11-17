@@ -116,23 +116,28 @@
         </div>
         <div class="form-group">
           <label>Supplier Price</label>
-          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Supplier Price">
+          <input type="number" class="form-control" id="prodSupplierPriceEdit" placeholder="Supplier Price">
         </div>
         <div class="form-group">
           <label>Shop Price</label>
-          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Shop Price">
+          <input type="number" class="form-control" id="prodShopPriceEdit" placeholder="Shop Price">
         </div>
         <div class="form-group">
           <label>Reseller Price</label>
-          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Reseller Price">
+          <input type="number" class="form-control" id="prodResellerPriceEdit" placeholder="Reseller Price">
         </div>
         <div class="form-group">
           <label>Wholesaler Price</label>
-          <input type="number" class="form-control" id="prodPriceEdit" placeholder="Wholesaler Price">
+          <input type="number" class="form-control" id="prodWholesalerPriceEdit" placeholder="Wholesaler Price">
         </div>
         <div class="form-group">
           <label>Product Available Stocks</label>
           <input type="number" class="form-control" id="prodStocksEdit" placeholder="Enter Product Stocks">
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="visibilityCheckBox"> <label class="form-check-label" for="exampleCheck1">Publish product</label> </input>
+          </div>
         </div>
 
       </div>
@@ -191,7 +196,10 @@
       <th scope="col">Image</th>
       <th scope="col">Name</th>
       <th scope="col">Category</th>
-      <th scope="col">Price</th>
+      <th scope="col">Supplier Price</th>
+      <th scope="col">Shop Price</th>
+      <th scope="col">Reseller Price</th>
+      <th scope="col">Wholesaler Price</th>
       <th scope="col">Stocks</th>
       <th scope="col">Status</th>
       <th scope="col">EDIT</th>
