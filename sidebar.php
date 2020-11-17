@@ -3,6 +3,7 @@
     $sideBar = '
    
         <div class="sidebar">
+        <h1>Norwegian</h1>
             <h2>Pink Salmon</h2>
             <ul>
                 <li><a href="home.php"><i class="fas fa-home"></i>Home</a></li>
