@@ -142,6 +142,11 @@ $(document).ready(function() {
                             prodRefs = null;
                             updateEntry(id)
                         });
+                        let visibility = field.isPublished;
+                        let status = {
+                            visibility
+                        }
+                        products[id] = status
                       
                     }
                     
@@ -165,7 +170,7 @@ $(document).ready(function() {
     })
 
     function updateEntry(id) {
-        
+        console.log(products[id]);
         prodRefs = firebase.database().ref('products/'+id)
         selectedID = id
         var name = $(`#labelName${id}`).html();
@@ -176,7 +181,7 @@ $(document).ready(function() {
         var stocks = $(`#labelStocks${id}`).html();
         var category_id = $(`#labelCategory${id}`).siblings(".hiddenID").val();
         var img = document.getElementById(`labelImage${id}`).src;
-        $("#visibilityCheckBox").prop('checked', products[id].visibility)
+        $("#visibilityCheckBox").prop('checked', products[id].status)
         $("#prodTitle").html(name);
         $("#prodNameEdit").val(name)
         $("#prodSupplierPriceEdit").val(price)
@@ -277,6 +282,8 @@ $(document).ready(function() {
         newProduct.stocks =  $("#prodStocks").val();
         newProduct.resellerPrice = $("#prodResellerPrice").val();
         newProduct.shopPrice = $("#prodShopPrice").val();
+        newProduct.isPublished = false;
+        newProduct.isOutOfStock = false;
         newProduct.wholeSalePrice = $("#prodWholesalerPrice").val();
         newProduct.image = ''
         console.log(newProduct)
