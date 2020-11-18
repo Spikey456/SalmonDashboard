@@ -35,6 +35,8 @@ const rolesRefs = dbRef.child('roles');
 
 $(document).ready(function() {
     var selectedID, orRef;
+    var productObjs = {};
+    var customerObjs = {};
     var orders = {};
     var table = $('#datatableid').DataTable({
         "language": {
@@ -42,25 +44,41 @@ $(document).ready(function() {
             "zeroRecords": "No reco rds to display"
         }
     });
+
     refreshProductList();
-    customerRefs.on("child_added", snap =>{
-        let field = snap.val();
-        let id = snap.key
-        console.log(snap)
-        $("#orderUser").append('<option value="'+id+'">'+field.name+'&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;'+field.email+'</option>')
-    });
+    refreshCustomerList();
+    
+    function refreshCustomerList(){
+        customerObjs = {};
+        customerRefs.on("child_added", snap =>{
+            let field = snap.val();
+            let id = snap.key
+            console.log(snap)
+            $("#orderUser").append('<option value="'+id+'">'+field.name+'&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;'+field.email+'</option>')
+            customerObjs[id] = field
+            console.log(customerObjs)
+        });
+    }
+    
     function refreshProductList(){
         $('[id^=orderProduct]').html(`<option default value="">Select Product...</option>`);
         productsRefs.on("child_added", snap =>{
-            let field = snap.val();
-            let id = snap.key;
-            $('[id^=orderProduct]').append('<option value="'+id+'">'+field.name+'</option>')
+            if(snap){
+                let field = snap.val();
+                let id = snap.key;
+                $('[id^=orderProduct]').append('<option value="'+id+'">'+field.name+'</option>')
+                productObjs[id] = field;
+                console.log(productObjs)
+            }
+            
         })
     }
+
     refresh()
     function refresh(){
         let count = 0
         orders = {};
+        productObjs = {};
         table.clear().draw();
         orderRefs.on("child_added", snap => {
             count++;
