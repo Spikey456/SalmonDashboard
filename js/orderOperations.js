@@ -256,27 +256,27 @@ $(document).ready(function() {
         Object.keys(orders[id].products).forEach(key => {
             let price = 0;
             if(orders[id].user.role === "-MM7epSByKyZ4VVVPBYK"){
-                price += parseInt(orders[id].products[key].resellerPrice, 10) * parseInt(orders[id].products[key].quantity, 10)
+                price += parseInt(orders[id].products[key].product.resellerPrice, 10) * parseInt(orders[id].products[key].product.quantity, 10)
                 console.log(price)
               
             }else if(orders[id].user.role === "-MM7eqzttvW3oJ3gnyYZ"){
-                price += parseInt(orders[id].products[key].wholeSalePrice, 10) * parseInt(orders[id].products[key].quantity, 10)
+                price += parseInt(orders[id].products[key].product.wholeSalePrice, 10) * parseInt(orders[id].products[key].product.quantity, 10)
                 console.log(price)
                 shippingWholeSale = 1000
               
             }
-            console.log(key, orders[id].products[key]);
+            console.log(key, orders[id].products[key].product);
             
             orderProductView += `<hr class="solid">
             <div id=${key} class="row">
                 <div class="col">
-                    <img style="width:100%; height:100px; object-fit: contain;" src="${orders[id].products[key].image}"/>
+                    <img style="width:100%; height:100px; object-fit: contain;" src="${orders[id].products[key].product.image}"/>
                 </div>
                 <div class ="col">
-                    <label><span id="orderViewProductName[${key}]">${orders[id].products[key].name}</span></label>
+                    <label><span id="orderViewProductName[${key}]">${orders[id].products[key].product.name}</span></label>
                 </div>
                 <div class="col">
-                    <label>Qty. <span id="orderViewQuantity[${key}]">${orders[id].products[key].quantity}</span></label>
+                    <label>Qty. <span id="orderViewQuantity[${key}]">${orders[id].products[key].product.quantity}</span></label>
                 </div>
                 <div class="col">
                     <label><span id="orderViewPrice[${key}]">${numberWithCommas(price)}</span></label>
@@ -384,7 +384,7 @@ $(document).ready(function() {
                                 stock: field.stocks
                             }
                             console.log(addProduct)
-                            products[productId] = addProduct;
+                            products[productId].product = addProduct;
                             
                             
                         }

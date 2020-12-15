@@ -15,6 +15,7 @@
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
   <script type="text/javascript" src='js/moment.min.js'></script>
   <script type="text/javascript" src='js/productOperations.js'></script>
   <script type="text/javascript" src='js/authOperations.js'></script>
@@ -70,6 +71,10 @@
         <div class="form-group">
           <label>Product Available Stocks</label>
           <input type="number" class="form-control" id="prodStocks" placeholder="Enter Product Stocks">
+        </div>
+        <div class="form-group">
+          <label>Product Description</label>
+          <textarea class="form-control" id="prodDesc" rows="3"></textarea>
         </div>
 
 

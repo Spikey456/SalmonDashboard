@@ -6,6 +6,7 @@
 	<link rel="stylesheet" text="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 	<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
 	<script src="./js/form.js"></script>
 </head>
 <body>
