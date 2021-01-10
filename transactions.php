@@ -229,7 +229,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" id="changeOrderStatus" class="btn btn-primary">Change Status</button>
+        <button type="button" id="changeOrderStatus" data-toggle="modal" data-target="#changeStatusModal" class="btn btn-primary">Change Status</button>
         <button type="button" id="rejectOrder" class="btn btn-primary">Reject</button>
         <button type="button" id="confirmOrder" class="btn btn-primary">Confirm Order</button>
         <button type="button" id="cancelOrder" class="btn btn-primary">Cancel Order</button>
@@ -242,6 +242,58 @@
 </div>
 
 <!-------------------------------------------------------------------------------------------------------------->
+
+<!-- CONFIRMATION DIALOG -->
+
+<div class="modal fade" id="confirmationDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="confirmationBody">
+
+      </div>  
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="confirmExecute" class="btn btn-primary">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-------------------------------------------------------------------------------------------------------------->
+
+<!-- CHANGE STATUS FORM -->
+
+<div class="modal fade" id="changeStatusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Change Order Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <select class="custom-select" id="selectStatus" aria-label="Default select example">
+        <option value="READY_TO_PICKUP">Ready to pickup</option>
+        <option value="IN_TRANSIT">In transit</option>
+      </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="saveStatus" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-------------------------------------------------------------------------------------------------------------->
+
 
 <!-- DELETE FORM -->
 <div class="modal fade" id="deletemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -34,7 +34,7 @@ const rolesRefs = dbRef.child('roles');
 
 
 $(document).ready(function() {
-    var selectedID, orRef;
+    var selectedID, orRef, selectedAction;
     var productObjs = {};
     var customerObjs = {};
     var orders = {};
@@ -94,7 +94,7 @@ $(document).ready(function() {
             console.log(localizeDate)
             console.log(orders)
             let idLabel = '<td><span id="labelName'+orderID+'">'+orderID+'</span></td>'
-            let statusLabel = '<td><span id="labelEmail'+orderID+'">'+field.status+'</span></td>'
+            let statusLabel = '<td><span id="labelEmail'+orderID+'">'+localizeStatus(field.status)+'</span></td>'
             let nameLabel = '<td><span id="labelEmail'+orderID+'">'+field.user.name+'</span></td>'
             let roleLabel = '<td><span id="labelEmail'+orderID+'">'+checkRole(field.user.role)+'</span></td>'
             let createdLabel = '<td><span id="labelRole'+orderID+'">'+localizeDate+'</span></td>'
@@ -128,8 +128,8 @@ $(document).ready(function() {
     function localizeStatus(status){
         if(status === "UNFULFILLED"){
             return "Unfulfilled";
-        }else if(status === "ORDER_APPROVED"){
-            return "Approved";
+        }else if(status === "UNFULFILLED(ORDER_APPROVED)"){
+            return "Unfulfilled(Order Approved)";
         }else if(status === "IN_TRANSIT"){
             return "On the way";
         }else if(status === "FULFILLED"){
@@ -140,6 +140,8 @@ $(document).ready(function() {
             return "Request for cancellation";
         }else if(status === "REJECTED"){
             return "Rejected"
+        }else if(status === "READY_TO_PICKUP"){
+            return "Ready to pickup"
         }
     }
     function numberWithCommas(x) {
@@ -177,12 +179,46 @@ $(document).ready(function() {
         $(`#row[${num}]`).remove();
     }
 
+    function showHideButtons(status){
+        if(status === "REQUEST_FOR_CANCEL"){
+            $('#confirmOrder').show();
+            $('#rejectOrder').show();
+            if(status === "REQUEST_FOR_CANCEL"){
+                console.log("SHOWWW CANCEL")
+                $('#cancelOrder').show()
+            }
+            $('#changeOrderStatus').hide();
+            $('#fulfillOrder').hide();
+        }else if (status === "UNFULFILLED"){
+            $('#changeOrderStatus').hide();
+            $('#fulfillOrder').hide();
+            $('#cancelOrder').hide()
+            $('#confirmOrder').show();
+            $('#rejectOrder').show();
+        }else if(status === "CANCELLED" || status === "FULFILLED" || status === "REJECTED"){
+            $('#changeOrderStatus').hide();
+            $('#fulfillOrder').hide();
+            $('#cancelOrder').hide()
+            $('#confirmOrder').hide();
+            $('#rejectOrder').hide();
+        }
+        else if(status !== "CANCELLED" || status !== "FULFILLED" || status !== "UNFULFILLED"){
+            $('#changeOrderStatus').show();
+            $('#fulfillOrder').show();
+            $('#cancelOrder').hide()
+            $('#confirmOrder').hide();
+            $('#rejectOrder').hide();
+        }
+    }
+
     function showOrderEntry(id){
+        selectedID = id;
         console.log(orders[id])
         let localizeDate = new Date(orders[id].created)
         localizeDate = localizeDate.toISOString().split('T')[0];
         let shippingWholeSale = 0;
         let orderProductView = ``;
+        showHideButtons(orders[id].status);
         let orderStatusDisplay = `
             <div class="row justify-content-around">
               <div class="col">
@@ -286,11 +322,64 @@ $(document).ready(function() {
          
             
         });
+        $("#selectStatus").val(orders[id].status)
         $("#orderViewStatus").html(orderStatusDisplay)
         $("#orderViewProducts").html(orderProductView)
         $("#orderViewSummary").html(orderSummaryDisplay)
         $("#orderModal").modal("show");
     }
+
+    $("#saveStatus").on("click", function() {
+        let newValue = $('#selectStatus').val();
+        firebase.database().ref('orders/'+selectedID).update({
+            status: newValue
+        }).then(function(snap){
+            console.log(snap)
+            console.log("UPDATED!")
+            $("#changeStatusModal").modal("hide")
+            $("#orderViewStatusDisplay").html(localizeStatus(newValue))
+            refresh();
+        })
+    });
+
+    $("#rejectOrder").on("click", function(){
+        selectedAction = "REJECTED";
+        $("#confirmationDialog").modal("show")
+        $("#confirmationBody").html("Reject order?")
+    })
+
+    $("#confirmOrder").on("click", function(){
+        selectedAction = "UNFULFILLED(ORDER_APPROVED)";
+        $("#confirmationDialog").modal("show")
+        $("#confirmationBody").html("Confirm order?")
+    })
+
+    $("#cancelOrder").on("click", function(){
+        selectedAction = "CANCELLED";
+        $("#confirmationDialog").modal("show")
+        $("#confirmationBody").html("Cancel order?")
+    })
+
+    $("#fulfillOrder").on("click", function(){
+        selectedAction = "FULFILLED";
+        $("#confirmationDialog").modal("show")
+        $("#confirmationBody").html("Fulfill order?")
+    })
+
+    $("#confirmExecute").on("click", function(){
+        firebase.database().ref('orders/'+selectedID).update({
+            status: selectedAction
+        }).then(function(snap){
+            console.log(snap)
+            console.log("UPDATED!")
+            $("#confirmationDialog").modal("hide")
+            showHideButtons(selectedAction);
+            orders[selectedID].status = selectedAction;
+            $("#orderViewStatusDisplay").html(localizeStatus(selectedAction))
+            refresh();
+        })
+    })    
+
     $("#saveOrder").on("click", function(){
 
         var getDate = new Date().toJSON(); 
