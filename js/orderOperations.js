@@ -367,17 +367,36 @@ $(document).ready(function() {
     })
 
     $("#confirmExecute").on("click", function(){
-        firebase.database().ref('orders/'+selectedID).update({
-            status: selectedAction
-        }).then(function(snap){
-            console.log(snap)
-            console.log("UPDATED!")
-            $("#confirmationDialog").modal("hide")
-            showHideButtons(selectedAction);
-            orders[selectedID].status = selectedAction;
-            $("#orderViewStatusDisplay").html(localizeStatus(selectedAction))
-            refresh();
-        })
+        var getDate = new Date().toJSON(); 
+        if(selectedAction === "FULFILLED"){
+            firebase.database().ref('orders/'+selectedID).update({
+                status: selectedAction,
+                fulfilled: true,
+                fullfilledDate: getDate
+            }).then(function(snap){
+                console.log(snap)
+                console.log("UPDATED!")
+                $("#confirmationDialog").modal("hide")
+                showHideButtons(selectedAction);
+                orders[selectedID].status = selectedAction;
+                $("#orderViewStatusDisplay").html(localizeStatus(selectedAction))
+                refresh();
+            })
+
+        }else{
+            firebase.database().ref('orders/'+selectedID).update({
+                status: selectedAction
+            }).then(function(snap){
+                console.log(snap)
+                console.log("UPDATED!")
+                $("#confirmationDialog").modal("hide")
+                showHideButtons(selectedAction);
+                orders[selectedID].status = selectedAction;
+                $("#orderViewStatusDisplay").html(localizeStatus(selectedAction))
+                refresh();
+            })
+        }
+        
     })    
 
     $("#saveOrder").on("click", function(){
