@@ -42,8 +42,9 @@ echo $_SESSION['__session']
 			<div class="container container-fluid" style="padding-top:50px;">
 				<div class="jumbotron">
 					<div class="row">
-						<div class="col-lg-4 col-xs-8">
+						<div class="col-lg-4 col-xs-8" style="cursor:pointer;" onclick="window.location = 'customers.php'">
 						<!-- small box -->
+						
 							<div class="small-box bg-aqua">
 								<div class="inner">
 								<h3 id="customerCount"></h3>
@@ -51,12 +52,12 @@ echo $_SESSION['__session']
 								<p>Total Customers</p>
 								</div>
 								<div class="icon">
-									<i class="fas fa-user-friends"></i>
+									<i class="fas fa-user-friends"  ></i>
 								</div>
 							</div>
 						</div>
 						
-						<div class="col-lg-4 col-xs-8">
+						<div class="col-lg-4 col-xs-8" style="cursor:pointer;" onclick="window.location = 'transactions.php'">
 						<!-- small box -->
 							<div class="small-box bg-yellow">
 								<div class="inner">
@@ -64,8 +65,8 @@ echo $_SESSION['__session']
 
 								<p>Total Orders</p>
 								</div>
-								<div class="icon">
-								<i class="fas fa-shopping-cart"></i>
+								<div class="icon" href="transactions.php">
+								<i class="fas fa-shopping-cart" ></i>
 								</div>
 							</div>
 						</div>
