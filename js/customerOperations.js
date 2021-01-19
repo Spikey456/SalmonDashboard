@@ -66,7 +66,7 @@ $(document).ready(function() {
                 let emailLabel = '<td><span id="labelEmail'+id+'">'+field.email+'</span></td>'
                 let roleLabel = '<td><span id="labelRole'+id+'">'+roleName+'</span><input type="hidden" class="hiddenID" value="'+roleID+'"></td>'
                 let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
-                let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">DELETE</button>`;
+                let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">Archive</button>`;
                 table.row.add([count, nameLabel, emailLabel, roleLabel, editBtn, delBtn]).draw();
 
                 console.log("Successful append to table")

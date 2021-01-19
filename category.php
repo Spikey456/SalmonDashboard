@@ -137,7 +137,6 @@
       <th scope="col">No.</th>
       <th scope="col">Category Name</th>
       <th scope="col">EDIT</th>
-       <th scope="col">DELETE</th>
     </tr>
   </thead>
   <tbody id="tableBody">

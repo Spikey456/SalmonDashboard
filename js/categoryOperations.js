@@ -44,9 +44,8 @@ $(document).ready(function() {
             let id = snap.key
             let nameLabel = '<td><span id="labelName'+id+'">'+field.name+'</span></td>'
             let editBtn = `<button type="button" id='update`+id+`' class="btn btn-success edit">EDIT</button>`;
-            let delBtn =  `<button type="button" id='del`+id+`' class="btn btn-danger delete">DELETE</button>`;
         
-            table.row.add([count, nameLabel, editBtn, delBtn]).draw();
+            table.row.add([count, nameLabel, editBtn]).draw();
             /*$("#tableBody").append('<tr id=row'+id+'>'+
             '<td>'+count+'</td>' +
             '<td>'+field.name+'</td>' +
@@ -57,11 +56,7 @@ $(document).ready(function() {
                 event.preventDefault()
                 updateEntry(id)
             });
-            $(`#del${id}`).bind("click", function(event) {
-                event.preventDefault()
-                selectedID = id
-                $("#deletemodal").modal('show')
-            });
+           
         })
     }
 
@@ -89,18 +84,7 @@ $(document).ready(function() {
         })
     })
 
-    $("#deleteCategory").on("click", function(){
-        console.log("Deleting " + selectedID);
-        catRef = firebase.database().ref('category/'+selectedID)
-        catRef.remove().then(function (){
-            $("#deletemodal").modal('hide')
-            refresh()
-               
-            alert("Deleted");
-        }).catch(function(error){
-            alert(error)
-        });
-    })
+ 
 
 
 
