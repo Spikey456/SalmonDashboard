@@ -35,9 +35,9 @@ $(document).ready(function() {
             for(const [key, value] of Object.entries(snap.val())){
                 count++;
                 sales += value.total;
-                if(value.status !== "FULFILLED" && value.status !== "CANCELLED" && value.status !=="REQUEST_FOR_CANCEL"){
+                if(value.status !== "FULFILLED" && value.status !== "CANCELLED" && value.status !=="REJECTED" && value.status !=="REQUEST_FOR_CANCEL"){
                     unfulfilledOrders++;
-                }else if(value.status === "CANCELLED" && value.status == "REQUEST_FOR_CANCEL"){
+                }else if(value.status === "CANCELLED" && value.status !=="REJECTED" && value.status == "REQUEST_FOR_CANCEL"){
                     cancelledOrders++;
                 }else{
                     fulfilledOrders++;
