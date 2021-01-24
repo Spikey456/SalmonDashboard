@@ -9,7 +9,7 @@
 	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
 	<script src="./js/form.js"></script>
 </head>
-<body>
+<body style="background-color: #bbbbbb">
 <div class="container">
 	<div class="login-box">
 	

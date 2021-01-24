@@ -94,7 +94,16 @@ $(document).ready(function() {
             console.log(localizeDate)
             console.log(orders)
             let idLabel = '<td><span id="labelName'+orderID+'">'+orderID+'</span></td>'
-            let statusLabel = '<td><span id="labelEmail'+orderID+'">'+localizeStatus(field.status)+'</span></td>'
+            let statusLabel = `<td><span style="font-weight: 600; color: 
+            ${field.status === 'FULFILLED'
+                ? '#32CD32'
+                : field.status === 'REJECTED'
+                ? 'red'
+                : field.status === 'REQUEST_FOR_CANCEL'
+                ? 'blue'
+                : field.status === 'CANCELLED'
+                ? 'violet'
+                : '#808000'}" id="labelEmail`+orderID+`">`+localizeStatus(field.status)+`</span></td>`
             let nameLabel = '<td><span id="labelEmail'+orderID+'">'+field.user.name+'</span></td>'
             let roleLabel = '<td><span id="labelEmail'+orderID+'">'+checkRole(field.user.role)+'</span></td>'
             let createdLabel = '<td><span id="labelRole'+orderID+'">'+localizeDate+'</span></td>'
@@ -223,7 +232,16 @@ $(document).ready(function() {
             <div class="row justify-content-around">
               <div class="col">
                 <label style="font-weight: 600;">Order Status:</label>
-                <p style="text-align:center" id="orderViewStatusDisplay">${localizeStatus(orders[id].status)}</p>
+                <p style="text-align:center; font-weight: 600; color: 
+                ${orders[id].status === 'FULFILLED'
+                    ? '#32CD32'
+                    : orders[id].status === 'REJECTED'
+                    ? 'red'
+                    : orders[id].status === 'REQUEST_FOR_CANCEL'
+                    ? 'blue'
+                    : orders[id].status === 'CANCELLED'
+                    ? 'violet'
+                    : '#808000'}" id="orderViewStatusDisplay">${localizeStatus(orders[id].status)}</p>
               </div>
               <div class="col">
                 <label style="font-weight: 600;">Placed on:</label>
