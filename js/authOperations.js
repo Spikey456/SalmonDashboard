@@ -5,7 +5,6 @@ async function signOut(){
         firebase.auth().signOut().then(function() {
             // Sign-out successful.
             window.location.href = "login2.php"
-            window.location.href = "login.php"
             alert("Signed out");
         }).catch(function(error) {
         // An error happened.

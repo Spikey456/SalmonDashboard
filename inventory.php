@@ -29,7 +29,7 @@ echo $_SESSION['__session']
 	<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
 	<script type="text/javascript" src='js/moment.min.js'></script>
 	<script type="text/javascript" src='js/inventoryOperations.js'></script>
-	
+	<script type="text/javascript" src='js/authOperations.js'></script>
 </head>
 <body>
 	<div class="wrapper">
