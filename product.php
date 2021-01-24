@@ -192,7 +192,7 @@
 
 		<div class="card" >
 			<div class="card-body text-center">
-      <h5 class="card-title">Products</h5>
+      <h5 class="card-title">PRODUCTS</h5>
       <hr class="solid">
 <table id="datatableid" class="table table-bordered table-light">
   <thead class="thead-light">

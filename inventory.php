@@ -40,7 +40,7 @@ echo $_SESSION['__session']
 		?>
 		<div class="main">
 			<div class="container container-fluid" style="padding-top:50px;">
-				<div class="jumbotron">
+			<div class="jumbotron" style="background-color: white; box-shadow: 0px 50px 100px 0px rgba(30, 30, 30, .4);">
 					<div class="row">
                         <div class="col-lg-6 col-xs-8">
 						<!-- small box -->
